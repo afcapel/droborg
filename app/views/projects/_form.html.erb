@@ -1,0 +1,52 @@
+<%= simple_form_for @project do |f| %>
+
+  <div class="form-group row">
+    <div class="col-md-4">
+      <%= f.input :name %>
+    </div>
+
+    <div class="col-md-6">
+      <%= f.input :git_url %>
+    </div>
+
+    <div class="col-md-2">
+      <%= f.input :workers, label: 'Number of workers' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-md-12">
+      <%= f.input :test_files_patterns, label: 'Paths to the test files' %>
+    </div>
+  </div>
+
+  <fieldset class="form-group">
+    <legend>Build setup</legend>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <%= f.input :setup_build_command %>
+        </div>
+
+        <div class="form-group">
+          <%= f.input :setup_job_command %>
+        </div>
+
+        <div class="form-group">
+          <%= f.input :after_job_command %>
+        </div>
+
+        <div class="form-group">
+          <%= f.input :after_build_command %>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.input :env, input_html: { rows: 8 }, label: 'Environment variables', hint: 'One variable per line' %>
+      </div>
+    </div>
+  </fieldset>
+
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

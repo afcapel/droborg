@@ -1,0 +1,30 @@
+<div class="list-group-item commit" id="commit_<%= commit %>">
+  <div class="pull-right">
+    <%= button_to 'Build', project_builds_path(@project.id, revision: commit.to_s), class: 'btn btn-success' %>
+  </div>
+
+  <div class="media">
+    <span class="pull-left">
+      <%= avatar_img(commit.author.email) %>
+    </span>
+    <div class="media-body">
+      <h4 class="media-heading">
+        <span class="rev">
+          <%= revision_link(@project, commit.to_s) %>
+        </span>
+
+        <span class="author">
+          <%= commit.author.name %>
+        </span>
+
+        <span class='date small'>
+          <%= l commit.author_date, format: :long %>
+        </span>
+      </h4>
+
+      <div class='commit-message'>
+        <%=simple_format truncate(commit.message, length: 250) %>
+      </div>
+    </div>
+  </div>
+</div>

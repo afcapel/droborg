@@ -1,0 +1,9 @@
+<%= job_tag job do %>
+  <td>
+    <%= link_to job do %>
+      Job #<%= job.number %>
+
+      <%= render partial: 'status', object: job %>
+    <% end %>
+  </td>
+<% end %>

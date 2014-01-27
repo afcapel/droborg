@@ -1,0 +1,7 @@
+<div id="flash">
+  <% flash.each do |kind, msg| %>
+    <%= content_tag :div, class: "alert alert-#{kind} alert-info" do %>
+      <%= content_tag :span, msg %>
+    <% end %>
+  <% end %>
+</div>

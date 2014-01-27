@@ -1,0 +1,16 @@
+<%= content_tag_for :tr, project do %>
+  <td><%= link_to project.name, project %></td>
+  <td>
+    <% if project.last_build %>
+      <%= link_to project.last_build do %>
+        <%= render partial: 'status', object: project.last_build %>
+      <% end %>
+    <% else %>
+      Not built yet.
+    <% end %>
+  </td>
+  <td>
+    <%= link_to 'Edit', edit_project_path(project) %> |
+    <%= link_to 'Delete', project_path(project), method: 'delete', remote: true, confirm: 'Are you sure?' %>
+  </td>
+<% end %>

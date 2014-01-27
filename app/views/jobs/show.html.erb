@@ -1,0 +1,19 @@
+<ol class="breadcrumb">
+  <li><%= link_to 'Projects', projects_path %></li>
+  <li><%= link_to @project.name, @project %></li>
+  <li><%= link_to "Build ##{@build.id}", @build %></li>
+</ol>
+
+<div class="page-header">
+  <div class="panel-<%= status_class(@job) %>">
+    <div class="panel-heading">
+      <h3>Job #<%= @job.number %> <small><%= render partial: 'status', object: @job %></small></h3>
+    </div>
+  </div>
+</div>
+
+<%= job_output_tag do %>
+  <pre>
+    <%= simple_format @job.output %>
+  </pre>
+<% end %>

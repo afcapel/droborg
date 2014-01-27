@@ -1,0 +1,11 @@
+<% if !defined?(status) || status.nil? %>
+  Not scheduled yet
+<% elsif status.pending? %>
+      Pending
+<% elsif status.running? %>
+  <%= image_tag 'spinner.gif' %> Running
+<% elsif status.success? %>
+    <span class="glyphicon glyphicon-ok-sign"></span> Success
+<% elsif status.failure? %>
+    <span class="glyphicon glyphicon-thumbs-down"></span> Error
+<% end %>

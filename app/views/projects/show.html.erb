@@ -1,0 +1,51 @@
+<ol class="breadcrumb">
+  <li><%= link_to 'Projects', projects_path %></li>
+  <li><%= @project.name %></li>
+</ol>
+
+<div class="page-header">
+  <%= link_to edit_project_path(@project), class: "btn btn-primary pull-right" do %>
+    <i class="icon-plus"></i>
+    Edit
+  <% end %>
+
+  <h1><%= @project.name %></h1>
+  <h4><%= @project.git_url %></h4>
+</div>
+
+<section id="latest-commits">
+  <header class="row">
+    <h3 class="col-md-2">Latest commits</h3>
+    <div class="col-md-4">
+      <form method="get" id="branch_nav_form">
+        <select name="branch" id="branches_select">
+          <%= options_for_select @branches, @branch %>
+        </select>
+      </form>
+    </div>
+    <div class="col-md-5">
+      <%= paginate @commits %>
+    </div>
+  </header>
+
+  <div class="list-group">
+    <%= render partial: 'commit', collection: @commits %>
+  </div>
+</section>
+
+
+<section id="builds">
+  <h3>Builds</h3>
+
+  <% if @builds.empty? %>
+    <div class="alert alert-warning">
+      <strong>No builds yet!</strong> Launch a build to see the results here.
+    </div>
+  <% end %>
+
+  <table class="table table-bordered table-striped" id="project-list">
+    <tbody>
+      <%= render partial: 'build', collection: @builds %>
+    </tbody>
+  </table>
+</section>

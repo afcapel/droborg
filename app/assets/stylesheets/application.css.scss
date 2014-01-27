@@ -1,0 +1,24 @@
+@import "theme";
+@import "bootstrap";
+@import "select2";
+
+input#project_workers{
+  max-width: 80px;
+}
+
+#branch_nav_form{
+  padding-top: 20px;
+}
+
+#branch_nav_form{
+  min-width: 150px;
+}
+
+#latest-commits .pagination{
+  @include clearfix;
+  float: right;
+}
+
+.job_title{
+  cursor: pointer;
+}
