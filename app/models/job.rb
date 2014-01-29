@@ -3,8 +3,6 @@ class Job < ActiveRecord::Base
   SPEC_PATTERN      = /.*_spec\.rb/
   TEST_UNIT_PATTERN = /.*_test\.rb/
 
-  ALLOWED_ENV_VARS = %w{HOME SHELL LC_ALL SHELL LC_CTYPE DISPLAY RBENV_ROOT}
-
   belongs_to :build
   has_many :test_files, dependent: :destroy
 
@@ -28,15 +26,16 @@ class Job < ActiveRecord::Base
   rescue Exception => ex
     self.not_failed = false
     self.output += "\nError executing job: #{ex.message}"
+    self.output += ex.backtrace.join("\n")
 
     finish(false)
   end
-  handle_asynchronously :execute!
+#  handle_asynchronously :execute!
 
   def execute(command)
     self.output += "$ #{command}\n"
 
-    exit_status = workspace.execute(command, child_env) do |stdin, stdout_err, wait_thread|
+    workspace.execute(command, env) do |stdin, stdout_err, wait_thread|
       while line = stdout_err.gets
         self.output += line
         save!
@@ -45,29 +44,6 @@ class Job < ActiveRecord::Base
       exit_status = wait_thread.value
       self.not_failed = not_failed && exit_status.success?
     end
-  end
-
-  def child_env
-    child_env = ENV.to_h.slice(*ALLOWED_ENV_VARS)
-
-    paths = ENV['PATH'].split(':').reject do |p|
-      p.include? "#{ENV['RBENV_ROOT']}/versions"
-    end
-
-    child_env['PATH'] = paths.join(':')
-
-    if File.exist? "#{workspace.path}/.ruby-version"
-      child_env['RBENV_VERSION'] = File.read("#{workspace.path}/.ruby-version").strip
-    end
-
-    child_env['TEST_BUILD']        = build.id.to_s
-    child_env['TEST_WORKER_INDEX'] = number.to_s
-    child_env['TEST_REV']          = build.revision
-    child_env['TEST_ENV_NUMBER']   = "_#{build.id}_#{number}"
-
-    child_env.merge!(project.env_hash)
-
-    child_env
   end
 
   def finish(result)
@@ -101,6 +77,14 @@ class Job < ActiveRecord::Base
   def failure?
     finished? && !success?
   end
+
+  def env
+    build.env.merge({
+      'TEST_WORKER_INDEX' => number.to_s,
+      'TEST_ENV_NUMBER'   => "_#{id}_#{number}"
+    })
+  end
+
 
   def spec_paths
     @spec_paths ||= test_paths.select { |path| path =~ SPEC_PATTERN }

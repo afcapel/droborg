@@ -17,7 +17,7 @@ class BuildsController < ApplicationController
     @project = Project.find(params[:project_id])
 
     @build = Build.new(project: @project, revision:  params[:revision], user: current_user)
-    @build.schedule!
+    @build.save! && @build.schedule!
 
     respond_with @build
   end

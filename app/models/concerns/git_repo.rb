@@ -21,12 +21,22 @@ module GitRepo
     git.log.object(branch).to_a.size
   end
 
+  def git_fetch
+    git.fetch
+  end
+
   def branches
     git.branches.remote.collect { |b| [b.name, "#{b.remote}/#{b.name}"] }
   end
 
   def git
     @git ||= init_git_repo
+  end
+
+  def clone_repo(path, revision = 'master')
+    FileUtils.mkdir_p(path)
+    clone = Git.clone("file://#{path_to_repo}", revision, :path => path)
+    clone.reset_hard(revision)
   end
 
   def init_git_repo

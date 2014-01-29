@@ -30,10 +30,22 @@
   </div>
 </div>
 
-<section id="results">
-  <h3>Results</h3>
+<%= build_poll_tag do %>
+  <section id="setup">
+    <h3>Setup task</h3>
+    <% if @build.setup_starting? %>
+      <%= image_tag 'spinner.gif' %> Starting
+    <% else %>
+      <pre>
+        <%= simple_format @build.output %>
+      </pre>
+    <% end %>
+  </section>
 
-  <%= build_poll_tag do %>
-    <%= render @jobs %>
-  <% end %>
-</section>
+  <section id="results">
+    <h3>Results</h3>
+    <table class="table">
+      <%= render @jobs %>
+    </table>
+  </section>
+<% end %>

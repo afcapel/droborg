@@ -1,4 +1,4 @@
 websocket_parser:
   name: websocket_parser
   git_url: git@github.com:afcapel/websocket_parser.git
-  setup_command: 'bundle'
+  setup_build_command: 'bundle'

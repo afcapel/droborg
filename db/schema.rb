@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140124013427) do
+ActiveRecord::Schema.define(version: 20140128232440) do
 
   create_table "builds", force: true do |t|
     t.integer  "user_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20140124013427) do
     t.string   "revision"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "output"
   end
 
   create_table "delayed_jobs", force: true do |t|
@@ -62,6 +63,7 @@ ActiveRecord::Schema.define(version: 20140124013427) do
     t.string   "after_build_command"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "build_command"
   end
 
   create_table "test_files", force: true do |t|

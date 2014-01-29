@@ -6,12 +6,15 @@ class ProjectsController < ApplicationController
   def show
     @builds  = @project.builds.order('id DESC')
 
-    @page   = params[:page].present?   ? params[:page].to_i : 1
+    @page   = params[:page].present? ? params[:page].to_i : 1
     @branch = normalize_branch_name
 
     skip = (@page - 1) * 5
 
-    @branches = @project.branches
+    @branches = Rails.cache.fetch "project-#{@project.name}-branches", expires_in: 5.minutes do
+      @project.git_fetch
+      @project.branches
+    end
 
     commits       = @project.commits(@branch, 5, skip)
     commits_count = @project.commit_count(@branch)

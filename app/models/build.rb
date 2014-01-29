@@ -19,7 +19,7 @@ class Build < ActiveRecord::Base
   end
 
   def finished?
-    jobs.all?(&:finished?)
+    jobs.size > 0 && jobs.all?(&:finished?)
   end
 
   def pending?
@@ -42,8 +42,23 @@ class Build < ActiveRecord::Base
     finished? && !success?
   end
 
+  def setup_starting?
+    output.blank? && jobs.size == 0 && !finished?
+  end
 
-  def schedule!(numbers = nil)
+  def schedule!
+    workspace.setup
+
+    self.output = "$ #{project.setup_build_command}\n"
+
+    workspace.execute(project.setup_build_command, env) do |stdin, stdout_err, wait_thread|
+      while line = stdout_err.gets
+        self.output += line
+      end
+      wait_thread.value
+      save!
+    end
+
     files_per_worker = (test_paths.size.to_f/workers).ceil
 
     parts = test_paths.in_groups_of(files_per_worker, false)
@@ -53,6 +68,7 @@ class Build < ActiveRecord::Base
 
     self.jobs.each(&:execute!)
   end
+  handle_asynchronously :schedule!
 
   def workers
     project.workers.to_i
@@ -64,6 +80,13 @@ class Build < ActiveRecord::Base
 
   def workspace
     @workspace ||= Workspace.new(project, revision)
+  end
+
+  def env
+    {
+      'TEST_BUILD'        => id.to_s,
+      'TEST_REV'          => revision
+    }
   end
 
   private
