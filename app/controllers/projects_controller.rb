@@ -1,6 +1,9 @@
 class ProjectsController < ApplicationController
+
   before_filter :authorize
   before_filter :load_project, only: [:show, :edit, :update]
+  before_filter :check_if_ready, only: :show
+
   respond_to :html, :json
 
   def show
@@ -29,10 +32,6 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.new(
       workers: 1,
-      setup_build_command: 'bundle install',
-      setup_job_command: 'bundle exec rake db:create db:schema:load',
-      after_job_command: 'bundle exec rake db:drop',
-      test_files_patterns: 'spec/**/*_spec.rb, test/**/*_test.rb',
       env: 'RAILS_ENV=test'
       )
   end
@@ -64,6 +63,10 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  def check_if_ready
+    render 'cloning' unless @project.ready?
+  end
+
   def normalize_branch_name
     case params[:branch]
     when /^origin\/(\w+)/
@@ -76,7 +79,6 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :type, :git_url, :workers, :env,
-      :test_files_patterns, :setup_build_command, :setup_job_command, :after_job_command, :after_build_command)
+    params.require(:project).permit(:name, :type, :git_url, :workers, :env)
   end
 end

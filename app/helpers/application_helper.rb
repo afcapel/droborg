@@ -18,6 +18,8 @@ module ApplicationHelper
 
     html_options[:data].merge!(toggle: "modal", target: '#modal')
 
+    html_options[:rel] ||= "modal"
+
     if block_given?
       link_to(options, html_options, &block)
     else

@@ -8,6 +8,7 @@ gem 'simple_form'
 gem 'kaminari'
 gem "select2-rails"
 gem 'sass-rails'
+gem 'responders'
 
 gem 'uglifier'
 gem 'coffee-rails'

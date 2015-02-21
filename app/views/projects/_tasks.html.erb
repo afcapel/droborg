@@ -1,0 +1,21 @@
+<div class="page-header" id="tasks">
+
+  <%= link_to_modal new_project_task_path(@project, format: "js"), class: "btn btn-primary pull-right" do %>
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a Task
+  <% end %>
+
+  <h3>Tasks</h3>
+
+  <% if @project.tasks.present? %>
+    <table class="table table-bordered" id="task-list">
+      <tbody>
+        <%= render @project.tasks %>
+      </tbody>
+    </table>
+
+    <% else %>
+
+    <p>There are no tasks in this project yet.</p>
+  <% end %>
+
+</div>

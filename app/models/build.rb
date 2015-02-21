@@ -1,4 +1,5 @@
 class Build < ActiveRecord::Base
+
   belongs_to :project
   belongs_to :user
   has_many :jobs, dependent: :destroy
@@ -18,64 +19,23 @@ class Build < ActiveRecord::Base
     workspace.commit
   end
 
-  def finished?
-    jobs.size > 0 && jobs.all?(&:finished?)
-  end
+  def run_next
+    project.tasks.each do |task|
+      job = job_for(task)
 
-  def pending?
-    jobs.any?(&:pending?)
-  end
-
-  def started?
-    jobs.any?(&:started?)
-  end
-
-  def running?
-    started? && !finished?
-  end
-
-  def success?
-    jobs.all?(&:success?)
-  end
-
-  def failure?
-    finished? && !success?
-  end
-
-  def setup_starting?
-    output.blank? && jobs.size == 0 && !finished?
-  end
-
-  def schedule!
-    workspace.setup
-
-    self.output = "$ #{project.setup_build_command}\n"
-
-    workspace.execute(project.setup_build_command, env) do |stdin, stdout_err, wait_thread|
-      while line = stdout_err.gets
-        self.output += line
+      case
+      when job.nil?
+        schedule(task)
+        return unless task.parallelizable?
+      when job.status == "completed" then next
+      when job.status == "running"   then return
       end
-      wait_thread.value
-      save!
     end
-
-    files_per_worker = (test_paths.size.to_f/workers).ceil
-
-    parts = test_paths.in_groups_of(files_per_worker, false)
-    parts.each_with_index { |number, i| add_job(number, i+1) }
-
-    save!
-
-    self.jobs.each(&:execute!)
-  end
-  handle_asynchronously :schedule!
-
-  def workers
-    project.workers.to_i
   end
 
-  def test_paths
-    @test_paths ||= test_files.collect { |p| p.sub("#{path_to_repo}/", '') }
+  def schedule(task)
+    job = jobs.create!(task: task)
+    RunJob.perform_later(job)
   end
 
   def workspace
@@ -101,13 +61,8 @@ class Build < ActiveRecord::Base
     self.jobs << job
   end
 
-  def test_files
-    files_per_pattern = project.test_files_patterns.split(', ').collect do |pattern|
-      pattern = pattern.strip
-      Dir.glob("#{path_to_repo}/#{pattern}")
-    end
-
-    files_per_pattern.flatten
+  def job_for(task)
+    self.jobs.where(task_id: task.id).first
   end
 
   def path_to_repo

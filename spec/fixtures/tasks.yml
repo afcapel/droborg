@@ -1,0 +1,23 @@
+websocket_parser_install:
+  project: websocket_parser
+  name: Install dependencies
+  parallelizable: false
+  command: "bundle install"
+  after_success: "echo 'success install'"
+  after_failure: "echo 'failure install'"
+
+websocket_parser_test_1:
+  project: websocket_parser
+  name: Test 1
+  parallelizable: true
+  command: "bundle exec rspec spec"
+  after_success: "echo 'success test 1'"
+  after_failure: "echo 'failure test 1'"
+
+websocket_parser_test_2:
+  project: websocket_parser
+  name: Test 2
+  parallelizable: true
+  command: "bundle exec rspec spec"
+  after_success: "echo 'success test 2'"
+  after_failure: "echo 'failure test 2'"

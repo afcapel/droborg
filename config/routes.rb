@@ -3,10 +3,12 @@ Droborg::Application.routes.draw do
   resources :users
 
   resources :projects do
+    resources :tasks
     resources :builds
   end
 
   resources :builds
+  resources :deploys
   resources :jobs
   resources :results
 

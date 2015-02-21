@@ -1,0 +1,5 @@
+websocket_parser_build:
+  user: admin
+  project: websocket_parser
+  branch: master
+  revision: 3c258f9fa716dbda359b8aafe8ada155de20a2f0

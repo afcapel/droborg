@@ -6,5 +6,4 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.where(email: 'admin@example.com').first_or_create!(name: 'Admin', password: 'password')
-Project.where(git_url: 'git@github.com:afcapel/websocket_parser.git').first_or_create!(
-  name: 'websocket_parser', setup_build_command: 'bundle install', test_files_patterns: 'spec/**/*_spec.rb')
+Project.where(git_url: 'git@github.com:afcapel/websocket_parser.git').first_or_create!(name: 'websocket_parser')

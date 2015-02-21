@@ -2,7 +2,6 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'capybara/poltergeist'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -20,5 +19,10 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.global_fixtures = :all
 
+  config.include ActiveJob::TestHelper
   config.include FeatureHelper, type: :feature
+
+  config.after :each do
+    clear_enqueued_jobs
+  end
 end

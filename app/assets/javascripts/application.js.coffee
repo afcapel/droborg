@@ -4,17 +4,6 @@
 #= require bootstrap
 #= require select2
 
-$(document).on 'click', 'a[rel=modal]', (event)->
-
-  $.ajax this.href,
-    data: { modal: true },
-    success: (data, textStatus, xhr)->
-      $('#modal').replaceWith(data)
-      $('#modal').modal('show')
-
-  event.stopPropagation()
-  event.preventDefault()
-
 poll = (element)->
   polledElement = $(element)
   pollUrl       = polledElement.data('poll-url') || location.href
@@ -36,3 +25,5 @@ $(document).on 'page:update poll:update', (event) ->
 $(document).on 'change', '#branches_select', ->
   $(this).closest('form').submit()
 
+$(document).on 'click', '[rel=modal]', ->
+  $('#modal').removeData('bs.modal')

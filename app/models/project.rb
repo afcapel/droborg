@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   include GitRepo
 
+  has_many :tasks, dependent: :destroy
   has_many :builds, dependent: :destroy
 
   validates :workers, numericality: { greater_than: 0 }
@@ -16,6 +17,12 @@ class Project < ActiveRecord::Base
   def last_build
     builds.last
   end
+
+  def setup
+    init_git_repo
+    update_attribute(:ready, true)
+  end
+  handle_asynchronously :setup
 
   def env_hash
     @env_hash ||= Hash.new.tap do |h|
