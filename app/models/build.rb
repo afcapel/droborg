@@ -2,7 +2,7 @@ class Build < ActiveRecord::Base
 
   belongs_to :project
   belongs_to :user
-  has_many :jobs, dependent: :destroy
+  has_many :jobs, -> { order(:number) }, dependent: :destroy
 
   validates :project, presence: true
   validates :user, presence: true
@@ -19,23 +19,55 @@ class Build < ActiveRecord::Base
     workspace.commit
   end
 
-  def run_next
-    project.tasks.each do |task|
-      job = job_for(task)
+  def setup
+    workspace.setup
 
+    project.tasks.each_with_index.collect do |task, index|
+      self.jobs.where(task_id: task.id).first_or_create(number: index + 1)
+    end
+  end
+
+  def setup!
+    setup
+    run_next
+  end
+
+  def run_next
+    jobs.each do |job|
       case
-      when job.nil?
-        schedule(task)
-        return unless task.parallelizable?
-      when job.status == "completed" then next
-      when job.status == "running"   then return
+      when job.pending?
+        schedule(job)
+        return unless job.task.parallelizable?
+      when job.succeded? then next
+      when job.failed?   then return
+      when job.running?  then return
       end
     end
   end
 
-  def schedule(task)
-    job = jobs.create!(task: task)
+  def schedule(job)
+    job.save! unless job.persisted?
     RunJob.perform_later(job)
+  end
+
+  def pending?
+    jobs.any? { |j| j.pending? }
+  end
+
+  def running?
+    jobs.any? { |j| j.running? }
+  end
+
+  def finished?
+    jobs.all? { |j| j.finished? }
+  end
+
+  def succeded?
+    jobs.all? { |j| j.succeded? }
+  end
+
+  def failed?
+    jobs.any? { |j| j.failed? }
   end
 
   def workspace
@@ -50,20 +82,6 @@ class Build < ActiveRecord::Base
   end
 
   private
-
-  def add_job(test_file_group, number)
-    job = self.jobs.where(number: number).first_or_initialize
-
-    test_file_group.each do |test_file_path|
-      job.test_files << TestFile.new(path: test_file_path)
-    end
-
-    self.jobs << job
-  end
-
-  def job_for(task)
-    self.jobs.where(task_id: task.id).first
-  end
 
   def path_to_repo
     project.path_to_repo

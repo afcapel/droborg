@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/twbs/bootstrap-sass.git
-  revision: 1d355261013ad2537790af4b09a96fddbfca8545
-  specs:
-    bootstrap-sass (3.3.3)
-      autoprefixer-rails (>= 5.0.0.1)
-      sass (>= 3.2.19)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -45,12 +37,15 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.0)
-    autoprefixer-rails (5.1.6)
+    autoprefixer-rails (5.1.7)
       execjs
       json
     bcrypt (3.1.10)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
+    bootstrap-sass (3.3.3)
+      autoprefixer-rails (>= 5.0.0.1)
+      sass (>= 3.2.19)
     builder (3.2.2)
     byebug (3.5.1)
       columnize (~> 0.8)
@@ -231,7 +226,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby
-  bootstrap-sass!
+  bootstrap-sass
   byebug
   capistrano
   coffee-rails

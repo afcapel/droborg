@@ -2,8 +2,14 @@
   <td>
     <%= link_to job do %>
       Job #<%= job.number %>
-
-      <%= render partial: 'status', object: job %>
+    <% end %>
+  </td>
+  <td>
+    <%= job.task.name %>
+  </td>
+  <td>
+    <%= link_to job do %>
+    <%= render partial: 'status', object: job %>
     <% end %>
   </td>
 <% end %>

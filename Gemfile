@@ -15,7 +15,7 @@ gem 'coffee-rails'
 gem 'therubyracer', platforms: :ruby
 gem 'jquery-rails'
 gem 'turbolinks'
-gem 'bootstrap-sass', github: 'twbs/bootstrap-sass'
+gem 'bootstrap-sass'
 
 gem 'jbuilder'
 gem 'bcrypt-ruby'

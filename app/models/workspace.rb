@@ -19,7 +19,7 @@ class Workspace
 
   def execute(command, env = {}, &block)
     Bundler.with_clean_env do
-      env = child_env.merge(env)
+      env    = child_env.merge(env)
       Open3.popen2e(env, command, spawn_options, &block)
     end
   end
@@ -31,11 +31,15 @@ class Workspace
 
   def setup
     project.init_git_repo unless File.exist?(path_to_repo)
-    clone_repo(Workspace.root_path, revision) unless File.exist?(path)
+    clone_revision(Workspace.root_path, revision) unless File.exist?(path)
   end
 
   def repo_name
     project.repo_name
+  end
+
+  def git_url
+    project.git_url
   end
 
   def path

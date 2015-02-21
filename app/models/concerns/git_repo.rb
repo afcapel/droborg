@@ -22,7 +22,7 @@ module GitRepo
   end
 
   def git_fetch
-    git.fetch
+    git.fetch(git_url)
   end
 
   def branches
@@ -33,8 +33,9 @@ module GitRepo
     @git ||= init_git_repo
   end
 
-  def clone_repo(path, revision = 'master')
+  def clone_revision(path, revision = 'master')
     FileUtils.mkdir_p(path)
+    git_fetch
     clone = Git.clone("file://#{path_to_repo}", revision, :path => path)
     clone.reset_hard(revision)
   end

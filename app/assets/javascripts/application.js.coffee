@@ -25,5 +25,5 @@ $(document).on 'page:update poll:update', (event) ->
 $(document).on 'change', '#branches_select', ->
   $(this).closest('form').submit()
 
-$(document).on 'click', '[rel=modal]', ->
+$('#modal').on 'hide.bs.modal', ->
   $('#modal').removeData('bs.modal')

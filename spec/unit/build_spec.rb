@@ -8,9 +8,9 @@ describe Build do
     it "schedules the first a job for the first task when it is run" do
       expect(RunJob).to receive(:perform_later).once.and_call_original
 
-      expect { build.run_next }.to change(Job, :count).by(1)
+      expect { build.setup! }.to change(Job, :count).by(3)
 
-      expect(Job.last.task).to eq(project.tasks.first)
+      expect(Job.first.task).to eq(project.tasks.first)
       expect(enqueued_jobs.size).to eq(1)
     end
 
@@ -18,7 +18,7 @@ describe Build do
       project.tasks.update_all parallelizable: true
       expect(RunJob).to receive(:perform_later).exactly(3).times.and_call_original
 
-      expect { build.run_next }.to change(Job, :count).by(3)
+      expect { build.setup! }.to change(Job, :count).by(3)
 
       jobs = Job.where(build_id: build.id)
 

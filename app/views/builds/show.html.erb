@@ -31,17 +31,6 @@
 </div>
 
 <%= build_poll_tag do %>
-  <section id="setup">
-    <h3>Setup task</h3>
-    <% if @build.setup_starting? %>
-      <%= image_tag 'spinner.gif' %> Starting
-    <% else %>
-      <pre>
-        <%= simple_format @build.output %>
-      </pre>
-    <% end %>
-  </section>
-
   <section id="results">
     <h3>Results</h3>
     <table class="table">

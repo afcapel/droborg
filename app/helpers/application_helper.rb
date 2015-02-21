@@ -58,9 +58,9 @@ module ApplicationHelper
   def status_class(object, other_classes = [])
     classes = other_classes
 
-    if object.success?
+    if object.succeded?
       classes << 'success'
-    elsif object.failure?
+    elsif object.failed?
       classes << 'danger'
     else
       classes << 'info'

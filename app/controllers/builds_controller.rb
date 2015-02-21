@@ -16,11 +16,10 @@ class BuildsController < ApplicationController
   def create
     @project = Project.find(params[:project_id])
 
-    @build = Build.new(project: @project, revision:  params[:revision], user: current_user)
-    @build.save! && @build.schedule!
+    @build = Build.create!(project: @project, revision: params[:revision], user: current_user)
+    @build.setup
+    @build.run_next
 
     respond_with @build
   end
-
-
 end

@@ -4,8 +4,8 @@
       Pending
 <% elsif status.running? %>
   <%= image_tag 'spinner.gif' %> Running
-<% elsif status.success? %>
+<% elsif status.succeded? %>
     <span class="glyphicon glyphicon-ok-sign"></span> Success
-<% elsif status.failure? %>
+<% elsif status.failed? %>
     <span class="glyphicon glyphicon-thumbs-down"></span> Error
 <% end %>
