@@ -21,5 +21,6 @@ module Droborg
     # config.i18n.default_locale = :de
 
     config.action_controller.include_all_helpers = false
+    config.active_job.queue_adapter = :delayed_job
   end
 end
