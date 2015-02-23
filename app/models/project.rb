@@ -4,7 +4,14 @@ class Project < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
   has_many :builds, dependent: :destroy
 
-  validates :workers, numericality: { greater_than: 0 }
+  def self.create_from_github_repo(repo_name)
+    repo = Github.find_repo(repo_name)
+
+    create!(
+      name: repo.name,
+      git_url: repo.ssh_url
+    )
+  end
 
   def repo_name
     name.parameterize

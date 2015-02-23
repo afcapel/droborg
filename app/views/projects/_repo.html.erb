@@ -1,0 +1,6 @@
+<tr class="repo">
+  <td>
+    <%= button_to "Add Project", projects_path(github_repo: repo.full_name), class: "btn btn-primary pull-left" %>
+    <%= link_to repo.full_name, repo.html_url, class: "repo-name" %>
+  </td>
+</tr>

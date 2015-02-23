@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '>=4.2.0'
 gem 'mysql2'
 gem 'git'
+gem 'octokit'
+gem 'omniauth-github'
 
 gem 'simple_form'
 gem 'kaminari'

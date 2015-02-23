@@ -17,8 +17,9 @@ class BuildsController < ApplicationController
     @project = Project.find(params[:project_id])
 
     @build = Build.create!(project: @project, revision: params[:revision], user: current_user)
-    @build.setup
-    @build.run_next
+    @build.create_jobs
+
+    LaunchBuildJob.perform_later(@build)
 
     respond_with @build
   end

@@ -1,5 +1,11 @@
 <div class="page-header">
-  <h1 class="modal-title">New project</h1>
+  <h1 class="modal-title">Add project from <%= @org.name %> </h1>
 </div>
 
-<%= render 'form' %>
+<table class="table table-bordered" id="repos-list">
+  <tbody>
+    <% @repos.each do |repo| %>
+      <%= render "repo", repo: repo %>
+    <% end %>
+  </tbody>
+</table>

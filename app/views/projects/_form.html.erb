@@ -1,24 +1,22 @@
 <%= simple_form_for @project do |f| %>
 
   <div class="form-group row">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <%= f.input :name %>
     </div>
 
     <div class="col-md-6">
       <%= f.input :git_url %>
     </div>
-
-    <div class="col-md-2">
-      <%= f.input :workers, label: 'Number of workers' %>
-    </div>
   </div>
 
-  <section class="row with-margins">
-    <div class="col-md-12">
-      <%= render "tasks" %>
-    </div>
-  </section>
+  <% if @project.persisted? %>
+    <section class="row with-margins">
+      <div class="col-md-12">
+        <%= render "tasks" %>
+      </div>
+    </section>
+  <% end %>
 
 
   <div class="form-group">

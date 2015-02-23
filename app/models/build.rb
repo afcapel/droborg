@@ -19,16 +19,14 @@ class Build < ActiveRecord::Base
     workspace.commit
   end
 
-  def setup
-    workspace.setup
-
+  def create_jobs
     project.tasks.each_with_index.collect do |task, index|
       self.jobs.where(task_id: task.id).first_or_create(number: index + 1)
     end
   end
 
-  def setup!
-    setup
+  def launch
+    workspace.setup
     run_next
   end
 

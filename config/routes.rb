@@ -16,6 +16,7 @@ Droborg::Application.routes.draw do
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
   resource :session
+  get "auth/github/callback", to: "sessions#create"
 
   root 'projects#index'
 end

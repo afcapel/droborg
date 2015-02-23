@@ -14,7 +14,7 @@ class ProjectsController < ApplicationController
 
     skip = (@page - 1) * 5
 
-    @branches = Rails.cache.fetch "project-#{@project.name}-branches", expires_in: 5.minutes do
+    @branches = Rails.cache.fetch "project-#{@project.id}-branches", expires_in: 5.minutes do
       @project.git_fetch
       @project.branches
     end
@@ -30,14 +30,12 @@ class ProjectsController < ApplicationController
   end
 
   def new
-    @project = Project.new(
-      workers: 1,
-      env: 'RAILS_ENV=test'
-      )
+    @org   = Github.org
+    @repos = Github.repos
   end
 
   def create
-    @project = Project.new(project_params)
+    @project = Project.create_from_github_repo(params[:github_repo])
 
     if @project.save
       @project.setup

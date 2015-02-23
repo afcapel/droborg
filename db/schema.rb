@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219212959) do
+ActiveRecord::Schema.define(version: 20150222025916) do
 
   create_table "builds", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -90,9 +90,12 @@ ActiveRecord::Schema.define(version: 20150219212959) do
   create_table "users", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.string   "email",           limit: 255
-    t.string   "password_digest", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "avatar_url",      limit: 255
+    t.integer  "github_uid",      limit: 4
+    t.string   "github_username", limit: 255
+    t.string   "github_token",    limit: 255
   end
 
 end
