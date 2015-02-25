@@ -20,6 +20,14 @@ class TasksController < ApplicationController
     task.destroy
   end
 
+  def move
+    if params[:move] == "up"
+      task.move_higher
+    else
+      task.move_lower
+    end
+  end
+
   private
 
   def task

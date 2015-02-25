@@ -26,6 +26,23 @@ input#project_workers{
   margin: 0 5px;
 }
 
+#tasks{
+  .name, .command, .actions{
+    padding: 10px 0 0 20px;
+  }
+
+  tr.task{
+    height: 42px;
+  }
+
+  .arrows-cell{
+    max-width: 52px;
+    span {
+      color: #666;
+    }
+  }
+}
+
 .job_title{
   cursor: pointer;
 }

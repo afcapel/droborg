@@ -1,8 +1,22 @@
 <%= content_tag_for :tr, task do %>
-  <td><%= task.name %></td>
-  <td><%= task.command %></td>
-  <td>
+
+  <td class="name"><%= task.name %></td>
+  <td class="command"><%= task.command %></td>
+  <td class="actions">
     <%= link_to_modal "Edit", edit_project_task_path(task.project, task, format: "js") %> |
     <%= link_to "Delete", project_task_path(task.project, task), remote: true, method: "delete", data: { confirm: "Are you sure?" } %>
+  </td>
+  <td class="arrows-cell">
+    <% unless task.first? %>
+      <%= link_to move_project_task_path(task.project, task, move: "up", format: "js" ), class: "btn btn-link pull-left", remote: true, method: :put do %>
+        <span class="glyphicon glyphicon-arrow-up"></span>
+      <% end %>
+    <% end %>
+
+    <% unless task.last? %>
+      <%= link_to move_project_task_path(task.project, task, move: "down", format: "js"), class: "btn btn-link pull-right", remote: true, method: :put do %>
+        <span class="glyphicon glyphicon-arrow-down"></span>
+      <% end %>
+    <% end %>
   </td>
 <% end %>

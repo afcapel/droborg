@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 
-  has_many :tasks, dependent: :destroy
+  has_many :tasks, -> { order(:position) }, dependent: :destroy
   has_many :builds, dependent: :destroy
 
   def self.create_from_github_repo(repo_name)

@@ -1,4 +1,7 @@
 admin:
   email: 'admin@example.com'
   name: 'Admin'
-  password_digest: <%= BCrypt::Password.create('password') %>
+  avatar_url: 'https://avatars.githubusercontent.com/u/150107?v=3'
+  github_uid: 150107
+  github_username: afcapel
+  github_token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

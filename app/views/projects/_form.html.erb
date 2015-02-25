@@ -1,12 +1,14 @@
 <%= simple_form_for @project do |f| %>
 
   <div class="form-group row">
+
     <div class="col-md-6">
       <%= f.input :name %>
+      <%= f.input :git_url %>
     </div>
 
     <div class="col-md-6">
-      <%= f.input :git_url %>
+      <%= f.input :env, input_html: { rows: 8 }, label: 'Environment variables', hint: 'One variable per line' %>
     </div>
   </div>
 

@@ -9,6 +9,7 @@ gem 'omniauth-github'
 gem 'simple_form'
 gem 'kaminari'
 gem "select2-rails"
+gem 'acts_as_list'
 gem 'sass-rails'
 gem 'responders'
 

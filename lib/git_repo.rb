@@ -11,8 +11,12 @@ class GitRepo
     @name    = name
   end
 
-  def path_to_repo
-    @path_to_repo ||= FileUtils.mkdir_p(GitRepo.root_path + name.parameterize).first
+  def path
+    @path ||= GitRepo.root_path + name.parameterize
+  end
+
+  def commit(revision)
+    git.gcommit(revision)
   end
 
   def commits(branch = 'master', count = 5, skip = 0)
@@ -39,15 +43,14 @@ class GitRepo
     @git ||= init
   end
 
-  def clone_revision(path, revision = 'master')
-    FileUtils.mkdir_p(path)
-    git_fetch
-    clone = Git.clone("file://#{path_to_repo}", revision, :path => path)
+  def clone_revision(revision_path, revision)
+    FileUtils.mkdir_p(revision_path)
+    clone = Git.clone("file://#{path}", revision, :path => revision_path)
     clone.reset_hard(revision)
   end
 
   def init
-    @git = Git.init(path_to_repo)
+    @git = Git.init(path)
 
     unless git_remote_names.include? 'origin'
       @remote_origin = @git.add_remote('origin', git_url)

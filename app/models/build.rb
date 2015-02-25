@@ -78,10 +78,4 @@ class Build < ActiveRecord::Base
       'TEST_REV'          => revision
     }
   end
-
-  private
-
-  def path_to_repo
-    project.path_to_repo
-  end
 end

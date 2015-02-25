@@ -20,17 +20,11 @@
 
   <div class="form-group row">
     <div class="col-md-12">
-      <%= f.input :after_success, as: :string %>
-    </div>
+      <%= f.input :env, input_html: { rows: 4 }, label: 'Environment variables', hint: 'One variable per line' %>
+    </div
   </div>
 
-  <div class="form-group row">
-    <div class="col-md-12">
-      <%= f.input :after_failure, as: :string %>
-    </div>
-  </div>
-
-  <div class="form-group row">
+  <div class="form-group">
     <div class="col-md-12">
       <%= f.submit class: 'btn btn-primary' %>
     </div>

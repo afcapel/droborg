@@ -14,7 +14,7 @@ class Workspace
   end
 
   def commit
-    git.gcommit(revision)
+    project.repo.commit(revision)
   end
 
   def execute(command, env = {}, &block)
@@ -30,8 +30,8 @@ class Workspace
   end
 
   def setup
-    project.init_git_repo unless File.exist?(path_to_repo)
-    clone_revision(Workspace.root_path, revision) unless File.exist?(path)
+    project.init_git_repo unless File.exist?(git_repo.path)
+    git_repo.clone_revision(Workspace.root_path, revision) unless File.exist?(path)
   end
 
   def path

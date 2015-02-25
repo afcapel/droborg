@@ -34,7 +34,7 @@ class CreateModels < ActiveRecord::Migration
         t.integer  "number",     limit: 4
         t.string   "type",       limit: 255
         t.boolean  "success",    limit: 1
-        t.text     "output",     limit: 65535
+        t.text     "output",     limit: 4294967295
         t.datetime "started"
         t.datetime "finished"
         t.datetime "created_at"

@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe Job do
+  include ActiveJob::TestHelper
+
   context "run job" do
     let(:project) { Project.where(name: "websocket_parser").first }
     let(:build)   { project.builds.first }
     let(:job) do
-      build.setup
+      build.create_jobs
       build.jobs.first
     end
 

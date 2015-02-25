@@ -4,6 +4,6 @@ module JobsHelper
     classes = []
     classes << 'data-poll-url' unless @job.finished?
 
-    content_tag :section, id: id, classes: classes.join(' '), &block
+    content_tag :section, id: id, classes: classes.join(' '), data: { "poll-url" => request.path }, &block
   end
 end

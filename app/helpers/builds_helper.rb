@@ -3,7 +3,7 @@ module BuildsHelper
     attributes = { id: 'build', class: 'build' }
 
     unless @build.finished?
-      attributes.merge!('data-poll-url' => request.path)
+      attributes.merge!(data: { 'poll-url' => request.path } )
     end
 
     content_tag :article, attributes, &block
