@@ -12,7 +12,7 @@ class Build < ActiveRecord::Base
   end
 
   def repo_name
-    project.repo_name
+    project.repo.name
   end
 
   def commit

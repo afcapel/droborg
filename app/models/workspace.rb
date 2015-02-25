@@ -1,9 +1,9 @@
 require 'open3'
 
 class Workspace
-  include GitRepo
 
   attr_accessor :project, :revision
+  delegate :git_repo, to: :project
 
   def self.root_path
     @root_path ||= FileUtils.mkdir_p(Rails.root + 'tmp/workspaces').first
@@ -32,14 +32,6 @@ class Workspace
   def setup
     project.init_git_repo unless File.exist?(path_to_repo)
     clone_revision(Workspace.root_path, revision) unless File.exist?(path)
-  end
-
-  def repo_name
-    project.repo_name
-  end
-
-  def git_url
-    project.git_url
   end
 
   def path

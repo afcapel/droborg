@@ -7,7 +7,8 @@ class Job < ActiveRecord::Base
 
   attr_accessor :not_failed
 
-  scope :started, -> { where('started IS NOT NULL') }
+  scope :started, -> { where("started IS NOT NULL") }
+  scope :running, -> { where("started IS NOT NULL AND finished IS NOT NULL") }
 
   def run
     self.not_failed = true

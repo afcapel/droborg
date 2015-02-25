@@ -1,4 +1,8 @@
 <%= content_tag_for :tr, task do %>
-  <td><%= link_to_modal task.name, edit_project_task_path(task.project, task, format: "js") %></td>
+  <td><%= task.name %></td>
   <td><%= task.command %></td>
+  <td>
+    <%= link_to_modal "Edit", edit_project_task_path(task.project, task, format: "js") %> |
+    <%= link_to "Delete", project_task_path(task.project, task), remote: true, method: "delete", data: { confirm: "Are you sure?" } %>
+  </td>
 <% end %>

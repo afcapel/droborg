@@ -1,16 +1,18 @@
-module GitRepo
-  extend ActiveSupport::Concern
+class GitRepo
 
-  included do
-    attr_reader :remote_origin
-  end
+  attr_reader :git_url, :name, :remote_origin
 
   def self.root_path
-    @root_path ||= FileUtils.mkdir_p(Rails.root + 'tmp/projects/').first
+    @root_path ||= FileUtils.mkdir_p(Rails.root + 'tmp/repos/').first
+  end
+
+  def initialize(git_url, name)
+    @git_url = git_url
+    @name    = name
   end
 
   def path_to_repo
-    @path_to_repo ||= FileUtils.mkdir_p(GitRepo.root_path + repo_name.parameterize).first
+    @path_to_repo ||= FileUtils.mkdir_p(GitRepo.root_path + name.parameterize).first
   end
 
   def commits(branch = 'master', count = 5, skip = 0)
@@ -21,7 +23,7 @@ module GitRepo
     git.log.object(branch).to_a.size
   end
 
-  def git_fetch
+  def fetch
     git.fetch(git_url)
   end
 
@@ -29,8 +31,12 @@ module GitRepo
     git.branches.remote.collect { |b| [b.name, "#{b.remote}/#{b.name}"] }
   end
 
+  def github?
+    git_url.start_with?('git@github.com:')
+  end
+
   def git
-    @git ||= init_git_repo
+    @git ||= init
   end
 
   def clone_revision(path, revision = 'master')
@@ -40,7 +46,7 @@ module GitRepo
     clone.reset_hard(revision)
   end
 
-  def init_git_repo
+  def init
     @git = Git.init(path_to_repo)
 
     unless git_remote_names.include? 'origin'

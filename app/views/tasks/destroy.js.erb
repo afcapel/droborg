@@ -1,0 +1,5 @@
+<% if @task.errors.any? %>
+  alert('<%=j @task.errors.full_messages.join("\n") %>');
+<% else %>
+  $('#tasks').replaceWith('<%=j render "/projects/tasks" %>');
+<% end %>

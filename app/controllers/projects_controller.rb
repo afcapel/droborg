@@ -11,16 +11,17 @@ class ProjectsController < ApplicationController
 
     @page   = params[:page].present? ? params[:page].to_i : 1
     @branch = normalize_branch_name
+    @repo   = @project.repo
 
     skip = (@page - 1) * 5
 
     @branches = Rails.cache.fetch "project-#{@project.id}-branches", expires_in: 5.minutes do
-      @project.git_fetch
-      @project.branches
+      @repo.fetch
+      @repo.branches
     end
 
-    commits       = @project.commits(@branch, 5, skip)
-    commits_count = @project.commit_count(@branch)
+    commits       = @repo.commits(@branch, 5, skip)
+    commits_count = @repo.commit_count(@branch)
 
     @commits = Kaminari.paginate_array(commits, total_count: commits_count).page(@page).per(5)
   end
@@ -38,7 +39,7 @@ class ProjectsController < ApplicationController
     @project = Project.create_from_github_repo(params[:github_repo])
 
     if @project.save
-      @project.setup
+      SetupProjectJob.perform_later(@project)
       redirect_to @project, notice: 'Project successfully created.'
     else
       render 'new'

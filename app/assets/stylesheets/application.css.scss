@@ -20,6 +20,12 @@ input#project_workers{
   float: right;
 }
 
+.small-avatar{
+  max-height: 32px;
+  max-width: 32px;
+  margin: 0 5px;
+}
+
 .job_title{
   cursor: pointer;
 }

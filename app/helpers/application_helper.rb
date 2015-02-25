@@ -27,9 +27,14 @@ module ApplicationHelper
     end
   end
 
-  def avatar_img(email)
+  def avatar_img(email, options = {})
+    options[:class] ||= "avatar img-thumbnail"
     gravatar_id = Digest::MD5.hexdigest(email.downcase)
-    image_tag "http://gravatar.com/avatar/#{gravatar_id}.png?s=48", class: 'avatar img-thumbnail'
+    image_tag "http://gravatar.com/avatar/#{gravatar_id}.png?s=48", options
+  end
+
+  def github_user_url(user)
+    "http://github.com/#{user.github_username}"
   end
 
   def project_link(project, options = {})
@@ -39,8 +44,6 @@ module ApplicationHelper
   end
 
   def revision_link(project, revision, options = {})
-    return revision unless project.github?
-
     options = { length: 10, truncate: true }.merge(options)
 
     text = options[:text] || revision
