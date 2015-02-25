@@ -1,6 +1,6 @@
 <%= content_tag_for :tr, build do %>
   <td><%= link_to "Build ##{build.name}", build %></td>
   <td>
-    <%= render partial: 'status', object: build %>
+    <%= render '/builds/status', build: build %>
   </td>
 <% end %>

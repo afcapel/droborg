@@ -3,7 +3,7 @@
   <td>
     <% if project.last_build %>
       <%= link_to project.last_build do %>
-        <%= render partial: 'status', object: project.last_build %>
+        <%= render '/builds/status', build: project.last_build %>
       <% end %>
     <% else %>
       Not built yet.

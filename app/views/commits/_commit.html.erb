@@ -1,12 +1,18 @@
-<div class="list-group-item commit" id="commit_<%= commit %>">
+<div class="list-group-item commit <%= status_class(commit) %>" id="commit_<%= commit %>">
   <div class="pull-right">
-    <%= button_to 'Build', project_builds_path(@project.id, revision: commit.to_s), class: 'btn btn-success' %>
+    <%= button_to 'Build', project_builds_path(@project.id, revision: commit.to_s), class: 'btn btn-primary' %>
   </div>
 
   <div class="media">
     <span class="pull-left">
       <%= avatar_img(commit.author.email) %>
     </span>
+
+    <div class="status">
+      <h4><%= render "/commits/status", commit: commit %></h4>
+    </div>
+
+
     <div class="media-body">
       <h4 class="media-heading">
         <span class="rev">

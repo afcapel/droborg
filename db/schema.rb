@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225140415) do
+ActiveRecord::Schema.define(version: 20150225160749) do
 
   create_table "builds", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150225140415) do
     t.text     "output",     limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",     limit: 255
   end
 
   create_table "delayed_jobs", force: :cascade do |t|

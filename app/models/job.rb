@@ -7,8 +7,9 @@ class Job < ActiveRecord::Base
 
   attr_accessor :not_failed
 
-  scope :started, -> { where("started IS NOT NULL") }
-  scope :running, -> { where("started IS NOT NULL AND finished IS NOT NULL") }
+  scope :started,      -> { where("started IS NOT NULL") }
+  scope :not_finished, -> { where("finished IS NULL") }
+  scope :running,      -> { started.not_finished }
 
   def run
     self.not_failed = true
@@ -43,6 +44,13 @@ class Job < ActiveRecord::Base
   def finish(result)
     self.update_attributes!(success: result, finished: Time.now)
     build.run_next
+  end
+
+  def elapsed_time
+    return 0 unless started
+
+    up_to = finished || Time.now
+    up_to.to_i - started.to_i
   end
 
   def pending?

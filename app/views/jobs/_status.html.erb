@@ -1,0 +1,11 @@
+<% if !defined?(job) || job.nil? %>
+  Not scheduled yet
+<% elsif job.pending? %>
+      Pending
+<% elsif job.running? %>
+  <%= image_tag 'spinner.gif' %> Running for <%= distance_of_time_in_words_to_now job.started %>
+<% elsif job.succeded? %>
+    <span class="glyphicon glyphicon-ok-sign"></span> Succeded after <%= pluralize(job.elapsed_time, "second") %>
+<% elsif job.failed? %>
+    <span class="glyphicon glyphicon-thumbs-down"></span> Failed after <%= pluralize(job.elapsed_time, "second") %>
+<% end %>

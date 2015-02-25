@@ -1,0 +1,18 @@
+<ol class="breadcrumb">
+  <li><%= link_to 'Jobs', jobs_path %></li>
+</ol>
+
+<div class="page-header">
+  <h1>Jobs</h1>
+</div>
+
+<table class="table table-striped">
+  <theader>
+    <tr>
+      <th>Project</th>
+      <th>Build</th>
+      <th>Result</th>
+    <tr>
+  </theader>
+  <%= render @jobs %>
+</table>

@@ -1,11 +1,11 @@
-<% if !defined?(build) || build.nil? %>
+<% if commit.blank? %>
   Not scheduled yet
-<% elsif build.pending? %>
+<% elsif commit.pending? %>
       Pending
-<% elsif build.running? %>
+<% elsif commit.running? %>
   <%= image_tag 'spinner.gif' %> Running
-<% elsif build.succeded? %>
+<% elsif commit.succeded? %>
     <span class="glyphicon glyphicon-ok-sign"></span> Success
-<% elsif build.failed? %>
+<% elsif commit.failed? %>
     <span class="glyphicon glyphicon-thumbs-down"></span> Error
 <% end %>

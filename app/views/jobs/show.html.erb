@@ -7,7 +7,7 @@
 <div class="page-header">
   <div class="panel-<%= status_class(@job) %>">
     <div class="panel-heading">
-      <h3>Job #<%= @job.number %> <small><%= render partial: 'status', object: @job %></small></h3>
+      <h3>Job #<%= @job.number %> <small><%= render '/jobs/status', job: @job %></small></h3>
     </div>
   </div>
 </div>

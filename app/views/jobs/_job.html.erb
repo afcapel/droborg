@@ -9,7 +9,7 @@
   </td>
   <td>
     <%= link_to job do %>
-    <%= render partial: 'status', object: job %>
+    <%= render '/jobs/status', job: job %>
     <% end %>
   </td>
 <% end %>

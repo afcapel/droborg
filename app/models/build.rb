@@ -1,11 +1,22 @@
 class Build < ActiveRecord::Base
 
+  STATUSES = [
+    SCHEDULED = "Scheduled",
+    RUNNING   = "Running",
+    FAILED    = "Failed",
+    SUCCESS   = "Success",
+    UNKNOWN   = "Unknown"
+  ]
+
   belongs_to :project
   belongs_to :user
   has_many :jobs, -> { order(:number) }, dependent: :destroy
 
   validates :project, presence: true
   validates :user, presence: true
+
+  scope :passing, -> { where(status: SUCCESS) }
+  scope :failed,  -> { where(status: SUCCESS) }
 
   def name
     "#{id} #{revision.truncate(10, omission: '')}"
@@ -23,10 +34,13 @@ class Build < ActiveRecord::Base
     project.tasks.each_with_index.collect do |task, index|
       self.jobs.where(task_id: task.id).first_or_create(number: index + 1)
     end
+
+    update_attribute :status, SCHEDULED
   end
 
   def launch
     workspace.setup
+    update_attribute :status, RUNNING
     run_next
   end
 
@@ -37,10 +51,15 @@ class Build < ActiveRecord::Base
         schedule(job)
         return unless job.task.parallelizable?
       when job.succeded? then next
-      when job.failed?   then return
+      when job.failed?
+        fail_build
+        return
       when job.running?  then return
       end
     end
+
+    # We've run all the jobs
+    finish
   end
 
   def schedule(job)
@@ -48,8 +67,22 @@ class Build < ActiveRecord::Base
     RunJob.perform_later(job)
   end
 
+  def finish
+    if succeded?
+      update_attribute :status, RUNNING
+    elsif failed?
+      update_attribute :status, FAILED
+    else
+      update_attribute :status, UNKNOWN
+    end
+  end
+
+  def fail_build
+    jobs.not_finished.update_all(finished: Time.now)
+  end
+
   def pending?
-    jobs.any? { |j| j.pending? }
+    status.in?([SCHEDULED, RUNNING]) && jobs.any? { |j| j.pending? }
   end
 
   def running?
@@ -61,11 +94,11 @@ class Build < ActiveRecord::Base
   end
 
   def succeded?
-    jobs.all? { |j| j.succeded? }
+    status == SUCCESS
   end
 
   def failed?
-    jobs.any? { |j| j.failed? }
+    status == FAILED
   end
 
   def workspace

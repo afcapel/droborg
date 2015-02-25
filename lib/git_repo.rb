@@ -20,7 +20,9 @@ class GitRepo
   end
 
   def commits(branch = 'master', count = 5, skip = 0)
-    git.log(count).object(branch).skip(skip).to_a
+    git.log(count).object(branch).skip(skip).collect do |git_commit|
+      Commit.new(git_commit)
+    end
   end
 
   def commit_count(branch = 'master')

@@ -3,6 +3,9 @@
 @import "bootstrap";
 @import "select2";
 
+$success-color: #dff0d8;
+$danger-color:   #f2dede;
+
 input#project_workers{
   max-width: 80px;
 }
@@ -41,6 +44,14 @@ input#project_workers{
       color: #666;
     }
   }
+}
+
+.success{
+  background-color: $success-color;
+}
+
+.danger, .failed{
+  background-color: $danger-color;
 }
 
 .job_title{
