@@ -57,6 +57,16 @@ class ProjectsController < ApplicationController
     respond_with @project
   end
 
+  def refresh
+    Rails.cache.delete "project-#{@project.id}-branches"
+
+    @repo = @project.repo
+    @repo.fetch
+    @repo.branches
+
+    redirect_to project_path(@project)
+  end
+
   private
 
   def load_project

@@ -4,13 +4,20 @@
 </ol>
 
 <div class="page-header">
-  <%= link_to edit_project_path(@project), class: "btn btn-primary pull-right" do %>
-    <i class="icon-plus"></i>
-    Edit
-  <% end %>
+
+  <div class="pull-right project-actions">
+    <%= link_to edit_project_path(@project), class: "btn btn-link" do %>
+      Edit
+    <% end %>
+  </div>
 
   <h1><%= @project.name %></h1>
-  <h4><%= @project.git_url %></h4>
+
+  <h4 class="pull-left"><%= @project.git_url %></h4>
+
+  <%= button_to refresh_project_path(@project), class: "btn btn-link refresh-link", method: :put do %>
+    Refresh
+  <% end %>
 </div>
 
 <section id="latest-commits">

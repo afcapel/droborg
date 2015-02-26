@@ -1,6 +1,8 @@
 class Project < ActiveRecord::Base
   include EnvParsing
 
+  has_many :deploy_scripts
+
   has_many :builds, dependent: :destroy
   has_many :deploys, dependent: :destroy
 

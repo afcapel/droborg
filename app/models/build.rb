@@ -69,7 +69,7 @@ class Build < ActiveRecord::Base
 
   def finish
     if succeded?
-      update_attribute :status, RUNNING
+      update_attribute :status, SUCCESS
     elsif failed?
       update_attribute :status, FAILED
     else

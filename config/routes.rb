@@ -3,6 +3,8 @@ Droborg::Application.routes.draw do
   resources :users
 
   resources :projects do
+    put :refresh, on: :member
+
     resources :tasks do
       put :move, on: :member
     end
@@ -14,6 +16,8 @@ Droborg::Application.routes.draw do
   resources :deploys
   resources :jobs
   resources :results
+
+  resources :deploy_scripts
 
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'

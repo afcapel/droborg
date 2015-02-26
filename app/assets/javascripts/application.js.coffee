@@ -19,6 +19,7 @@ poll = (element)->
   , pollInterval
 
 $(document).on 'page:update poll:update', (event) ->
+  $('#deploy_scripts_select').select2({ width: '200px' })
   $('#branches_select').select2({ width: '200px' })
   $('[data-poll-url]').each (index, element) -> poll(element)
 
