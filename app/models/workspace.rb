@@ -30,7 +30,7 @@ class Workspace
   end
 
   def setup
-    project.init_git_repo unless File.exist?(git_repo.path)
+    project.git_repo.init unless File.exist?(git_repo.path)
     git_repo.fetch
     git_repo.clone_revision(Workspace.root_path, revision) unless File.exist?(path)
   end

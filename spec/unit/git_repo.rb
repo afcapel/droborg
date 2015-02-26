@@ -8,7 +8,7 @@ describe GitRepo do
   end
 
   it "can initialize the git repo" do
-    project.init_git_repo
+    project.git_repo.init
 
     expect(File).to exist(Rails.root.to_s + "/tmp/projects/websocket_parser/websocket_parser.gemspec")
   end
