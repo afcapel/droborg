@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_filter :authorize
-  before_filter :load_project, only: [:show, :edit, :update]
+  before_filter :load_project, only: [:show, :edit, :update, :refresh]
   before_filter :check_if_ready, only: :show
 
   respond_to :html, :json
@@ -16,7 +16,6 @@ class ProjectsController < ApplicationController
     skip = (@page - 1) * 5
 
     @branches = Rails.cache.fetch "project-#{@project.id}-branches", expires_in: 5.minutes do
-      @repo.fetch
       @repo.branches
     end
 

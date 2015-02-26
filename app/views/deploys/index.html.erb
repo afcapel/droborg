@@ -39,7 +39,8 @@
       <th>Scheduled by</th>
       <th>Result</th>
       <th>Revision</th>
+      <th>Deploy to</th>
     <tr>
   </theader>
-  <%= render @builds %>
+  <%= render partial: "build", collection: @builds %>
 </table>

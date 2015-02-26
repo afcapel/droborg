@@ -1,0 +1,13 @@
+<%= content_tag_for :tr, build do %>
+  <td><%= link_to build.project.name, build.project %></td>
+  <td><%= link_to "Build ##{build.id}", build %></td>
+  <td><%= link_to build.user.name, build.user %></td>
+  <td><%= render '/builds/status', build: build %></td>
+  <td><%= revision_link build.project, build.revision %></td>
+  <td>
+    <%= form_for @deploy, remote: true do |f| %>
+      <%= deploy_env_select %>
+      <%= f.submit "Deploy", class: "btn btn-danger", confirm: "Are you sure?" %>
+    <% end %>
+  </td>
+<% end %>
