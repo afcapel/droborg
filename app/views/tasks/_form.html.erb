@@ -1,4 +1,4 @@
-<%= simple_form_for [@task.project, @task], remote: true do |f| %>
+<%= simple_form_for [@task.project, @task], url: project_tasks_path(@task.project, @task), remote: true do |f| %>
 
   <div class="form-group row">
     <div class="col-md-6">

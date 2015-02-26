@@ -1,8 +1,12 @@
 class Project < ActiveRecord::Base
   include EnvParsing
 
-  has_many :tasks, -> { order(:position) }, dependent: :destroy
   has_many :builds, dependent: :destroy
+  has_many :deploys, dependent: :destroy
+
+  has_many :build_tasks,  -> { order(:position) }, dependent: :destroy, class_name: "Build::Task"
+  has_many :deploy_tasks, -> { order(:position) }, dependent: :destroy, class_name: "Deploy::Task"
+
 
   def self.create_from_github_repo(repo_name)
     repo = Github.find_repo(repo_name)

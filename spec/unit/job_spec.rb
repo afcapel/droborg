@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Job do
+describe Build::Job do
   include ActiveJob::TestHelper
 
   context "run job" do

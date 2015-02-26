@@ -3,11 +3,11 @@ class TasksController < ApplicationController
   before_filter :task, only: [:show, :edit]
 
   def new
-    @task = project.tasks.build(name: "New Task")
+    @task = project.build_tasks.build(name: "New Task")
   end
 
   def create
-    task = project.tasks.create!(task_params)
+    task = project.build_tasks.create!(task_params)
     render "update"
   end
 
@@ -31,7 +31,7 @@ class TasksController < ApplicationController
   private
 
   def task
-    @task ||= project.tasks.find(params[:id])
+    @task ||= project.build_tasks.find(params[:id])
   end
 
   def project
@@ -39,6 +39,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :command, :env)
+    params.require(:build_task).permit(:name, :command, :env, :type)
   end
 end

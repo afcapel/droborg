@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225160749) do
+ActiveRecord::Schema.define(version: 20150226114613) do
 
   create_table "builds", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -39,6 +39,27 @@ ActiveRecord::Schema.define(version: 20150225160749) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "deploy_steps", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "revision",   limit: 255
+    t.integer  "project_id", limit: 4
+    t.integer  "build_id",   limit: 4
+    t.text     "output",     limit: 4294967295
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  create_table "deploys", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "revision",   limit: 255
+    t.integer  "user_id",    limit: 4
+    t.integer  "project_id", limit: 4
+    t.integer  "build_id",   limit: 4
+    t.text     "output",     limit: 4294967295
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
 
   create_table "jobs", force: :cascade do |t|
     t.integer  "build_id",   limit: 4
@@ -74,6 +95,7 @@ ActiveRecord::Schema.define(version: 20150225160749) do
     t.text     "env",            limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type",           limit: 255
   end
 
   create_table "users", force: :cascade do |t|

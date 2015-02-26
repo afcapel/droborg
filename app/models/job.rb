@@ -1,6 +1,7 @@
 class Job < ActiveRecord::Base
 
   belongs_to :build
+  belongs_to :deploy
   belongs_to :task
 
   delegate :project, :workspace, to: :build

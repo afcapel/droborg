@@ -8,5 +8,5 @@
 project = Project.where(git_url: 'git@github.com:afcapel/websocket_parser.git').first_or_create!(name: 'websocket_parser')
 project.setup
 
-project.tasks.create(name: "Install dependencies", command: "bundle install")
-project.tasks.create(name: "Run specs", command: "bundle exec rspec spec")
+project.build_tasks.create(name: "Install dependencies", command: "bundle install")
+project.build_tasks.create(name: "Run specs", command: "bundle exec rspec spec")

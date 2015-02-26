@@ -1,0 +1,38 @@
+<ol class="breadcrumb">
+  <li><%= link_to 'Deploys', builds_path %></li>
+</ol>
+
+<div class="page-header">
+  <h1>Deploys</h1>
+</div>
+
+<table class="table table-striped">
+  <theader>
+    <tr>
+      <th>Project</th>
+      <th>Build</th>
+      <th>Scheduled by</th>
+      <th>Result</th>
+      <th>Revision</th>
+    <tr>
+  </theader>
+  <%= render @deploys %>
+</table>
+
+
+<div class="page-header">
+  <h1>Latest successful builds</h1>
+</div>
+
+<table class="table table-striped">
+  <theader>
+    <tr>
+      <th>Project</th>
+      <th>Build</th>
+      <th>Scheduled by</th>
+      <th>Result</th>
+      <th>Revision</th>
+    <tr>
+  </theader>
+  <%= render @builds %>
+</table>

@@ -31,7 +31,7 @@ class Build < ActiveRecord::Base
   end
 
   def create_jobs
-    project.tasks.each_with_index.collect do |task, index|
+    project.build_tasks.each_with_index.collect do |task, index|
       self.jobs.where(task_id: task.id).first_or_create(number: index + 1)
     end
 

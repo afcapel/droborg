@@ -9,11 +9,11 @@ class Task < ActiveRecord::Base
   before_destroy :check_no_running_jobs
 
   def first?
-    project.tasks.first == self
+    project.build_tasks.first == self
   end
 
   def last?
-    project.tasks.last == self
+    project.build_tasks.last == self
   end
 
   private

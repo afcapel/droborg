@@ -1,11 +1,11 @@
 class JobsController < ApplicationController
 
   def index
-    @jobs = Job.not_finished
+    @jobs = Build::Job.not_finished
   end
 
   def show
-    @job  = Job.find(params[:id])
+    @job  = Build::Job.find(params[:id])
 
     @build   = @job.build
     @project = @build.project
