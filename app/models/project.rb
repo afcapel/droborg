@@ -1,4 +1,5 @@
 class Project < ActiveRecord::Base
+  include EnvParsing
 
   has_many :tasks, -> { order(:position) }, dependent: :destroy
   has_many :builds, dependent: :destroy
@@ -28,16 +29,5 @@ class Project < ActiveRecord::Base
   def setup
     git_repo.fetch
     update_attribute(:ready, true)
-  end
-
-  def env_hash
-    @env_hash ||= Hash.new.tap do |h|
-      next if env.blank?
-
-      env.lines.each do |line|
-        key, val = line.split('=')
-        h[key.strip] = val.strip if val.present?
-      end
-    end
   end
 end

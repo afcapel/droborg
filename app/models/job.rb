@@ -78,6 +78,6 @@ class Job < ActiveRecord::Base
   end
 
   def env
-    build.env.merge({})
+    build.env.merge(task.env_hash)
   end
 end

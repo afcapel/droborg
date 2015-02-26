@@ -30,7 +30,7 @@ class GitRepo
   end
 
   def fetch
-    git.fetch(git_url)
+    `cd #{path} && git fetch`
   end
 
   def branches
@@ -45,10 +45,15 @@ class GitRepo
     @git ||= init
   end
 
-  def clone_revision(revision_path, revision)
+  def clone_revision(dir, revision)
+    fetch
+
+    revision_path = "#{dir}/#{revision}"
+
     FileUtils.mkdir_p(revision_path)
-    clone = Git.clone("file://#{path}", revision, :path => revision_path)
-    clone.reset_hard(revision)
+
+    `git clone --local #{path} #{revision_path}`
+    `cd #{revision_path} && git fetch -q origin && git fetch --tags -q origin && git reset -q --hard #{revision} && git clean -q -d -x -f`
   end
 
   def init

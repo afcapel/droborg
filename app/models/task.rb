@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  include EnvParsing
+
   belongs_to :project
   has_many :jobs
 

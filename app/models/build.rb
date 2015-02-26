@@ -94,11 +94,11 @@ class Build < ActiveRecord::Base
   end
 
   def succeded?
-    status == SUCCESS
+    status == SUCCESS || jobs.all? { |j| j.succeded? }
   end
 
   def failed?
-    status == FAILED
+    status == FAILED || jobs.any? { |j| j.failed? }
   end
 
   def workspace
