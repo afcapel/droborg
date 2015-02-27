@@ -5,9 +5,11 @@
   <td><%= render '/builds/status', build: build %></td>
   <td><%= revision_link build.project, build.revision %></td>
   <td>
-    <%= form_for @deploy, remote: true do |f| %>
-      <%= deploy_env_select %>
-      <%= f.submit "Deploy", class: "btn btn-danger", confirm: "Are you sure?" %>
+    <% if build.project.deploy_environments.any? %>
+      <%= form_for @deploy, remote: true do |f| %>
+        <%= deploy_env_select_for(build.project) %>
+        <%= f.submit "Deploy", class: "btn btn-danger", confirm: "Are you sure?" %>
+      <% end %>
     <% end %>
   </td>
 <% end %>

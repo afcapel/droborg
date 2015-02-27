@@ -1,0 +1,14 @@
+<div class="page-header">
+  <div class="pull-right">
+    <%= link_to new_deploy_environment_path, class: "btn btn-link" do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Add deploy environment
+    <% end %>
+  </div>
+
+  <h1 class="modal-title">Deploy Environments</h1>
+</div>
+
+<% @projects.each do |project| %>
+  <%= render "environments", project: project, environments: project.deploy_environments %>
+<% end %>

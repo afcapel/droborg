@@ -40,25 +40,27 @@ ActiveRecord::Schema.define(version: 20150226114613) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
-  create_table "deploy_steps", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "revision",   limit: 255
-    t.integer  "project_id", limit: 4
-    t.integer  "build_id",   limit: 4
-    t.text     "output",     limit: 4294967295
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+  create_table "deploy_environments", force: :cascade do |t|
+    t.string   "name",             limit: 255
+    t.integer  "project_id",       limit: 4
+    t.string   "current_revision", limit: 255
+    t.boolean  "available",        limit: 1
+    t.text     "env",              limit: 65535
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "deploys", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "revision",   limit: 255
-    t.integer  "user_id",    limit: 4
-    t.integer  "project_id", limit: 4
-    t.integer  "build_id",   limit: 4
-    t.text     "output",     limit: 4294967295
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.string   "name",                  limit: 255
+    t.string   "revision",              limit: 255
+    t.integer  "user_id",               limit: 4
+    t.integer  "project_id",            limit: 4
+    t.integer  "deploy_environment_id", limit: 4
+    t.integer  "build_id",              limit: 4
+    t.datetime "deployed_at"
+    t.text     "output",                limit: 4294967295
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   create_table "jobs", force: :cascade do |t|

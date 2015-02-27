@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+
+  before_filter :authorize
   protect_from_forgery with: :exception
 
   layout -> { params[:modal].present? ? 'modal' : 'application' }

@@ -3,31 +3,6 @@
 </ol>
 
 <div class="page-header">
-  <div class="pull-right">
-    <%= link_to new_deploy_script_path, class: "btn btn-link" do %>
-      <i class="icon-plus"></i>
-      Add deploy script
-    <% end %>
-  </div>
-
-  <h1>Deploys</h1>
-</div>
-
-<table class="table table-striped">
-  <theader>
-    <tr>
-      <th>Project</th>
-      <th>Build</th>
-      <th>Scheduled by</th>
-      <th>Result</th>
-      <th>Revision</th>
-    <tr>
-  </theader>
-  <%= render @deploys %>
-</table>
-
-
-<div class="page-header">
   <h1>Latest successful builds</h1>
 </div>
 
@@ -43,4 +18,22 @@
     <tr>
   </theader>
   <%= render partial: "build", collection: @builds %>
+</table>
+
+
+<div class="page-header">
+  <h1>Deploys</h1>
+</div>
+
+<table class="table table-striped">
+  <theader>
+    <tr>
+      <th>Project</th>
+      <th>Build</th>
+      <th>Scheduled by</th>
+      <th>Result</th>
+      <th>Revision</th>
+    <tr>
+  </theader>
+  <%= render @deploys %>
 </table>

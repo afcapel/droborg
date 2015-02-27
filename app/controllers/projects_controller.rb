@@ -1,6 +1,5 @@
 class ProjectsController < ApplicationController
 
-  before_filter :authorize
   before_filter :load_project, only: [:show, :edit, :update, :refresh]
   before_filter :check_if_ready, only: :show
 

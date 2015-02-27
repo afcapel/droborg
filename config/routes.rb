@@ -17,7 +17,9 @@ Droborg::Application.routes.draw do
   resources :jobs
   resources :results
 
-  resources :deploy_scripts
+  namespace :deploy do
+    resources :environments
+  end
 
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'

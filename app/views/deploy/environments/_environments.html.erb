@@ -1,0 +1,17 @@
+<section class="project-environments">
+  <h3>Environments for <%= project.name %></h3>
+
+  <table class="table table-striped">
+    <theader>
+      <tr>
+        <th>Name</th>
+        <th>Current Revision</th>
+        <th>Deployed by</th>
+        <th>When</th>
+        <th>Available?</th>
+        <th></th>
+      <tr>
+    </theader>
+    <%= render environments %>
+  </table>
+</section>

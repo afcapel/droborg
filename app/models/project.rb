@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   include EnvParsing
 
-  has_many :deploy_scripts
+  has_many :deploy_environments, class_name: "Deploy::Environment"
 
   has_many :builds, dependent: :destroy
   has_many :deploys, dependent: :destroy

@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
   layout 'public'
+  skip_before_filter :authorize
 
   def create
     user = user_from_omniauth

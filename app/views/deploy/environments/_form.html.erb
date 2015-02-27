@@ -1,0 +1,27 @@
+<%= simple_form_for @environment do |f| %>
+
+  <div class="form-group row">
+    <div class="col-md-6">
+      <%= f.input :name %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-md-6">
+      <%= f.association :project %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-md-6">
+      <%= f.input :env, input_html: { rows: 8 }, label: 'Environment variables', hint: 'One variable per line' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-primary' %>
+    <span class="or">or</span>
+    <%= link_to "Go back", projects_path %>
+  </div>
+
+<% end %>

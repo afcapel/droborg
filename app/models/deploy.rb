@@ -1,3 +1,3 @@
 class Deploy < ActiveRecord::Base
-  belongs_to :deploy_script
+  belongs_to :deploy_environment
 end

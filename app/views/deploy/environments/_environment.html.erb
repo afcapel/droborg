@@ -1,0 +1,33 @@
+<% last_deploy = environment.last_deploy %>
+
+<%= content_tag_for :tr, environment do %>
+  <td><%= link_to environment.name, environment %></td>
+
+  <% if last_deploy %>
+    <td>
+      <%= link_to last_deploy.revision, last_deploy %>
+    </td>
+
+    <td>
+      <%= link_to last_deploy.user.name, last_deploy.user %>
+    </td>
+
+    <td>
+      <%= link_to last_deploy, last_deploy.user %>
+    </td>
+
+  <% else %>
+    <td>Not deployed yet.</td>
+    <td></td>
+    <td></td>
+  <% end %>
+
+  <td>
+    <%= environment.available? ? "Yes" : "No" %>
+  </td>
+
+  <td>
+    <%= link_to 'Edit', edit_deploy_environment_path(environment) %> |
+    <%= link_to 'Delete', deploy_environment_path(environment), method: 'delete', remote: true, confirm: 'Are you sure?' %>
+  </td>
+<% end %>
