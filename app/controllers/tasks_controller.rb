@@ -3,16 +3,15 @@ class TasksController < ApplicationController
   before_filter :task, only: [:show, :edit]
 
   def new
-    @task = project.build_tasks.build(name: "New Task")
+    @task = scope.build(name: "New Task")
   end
 
   def create
-    task = project.build_tasks.create!(task_params)
+    @task = scope.create!(task_params)
     render "update"
   end
 
   def update
-    project = task.project
     task.update_attributes!(task_params)
   end
 
@@ -31,14 +30,29 @@ class TasksController < ApplicationController
   private
 
   def task
-    @task ||= project.build_tasks.find(params[:id])
+    @task ||= scope.find(params[:id])
   end
 
   def project
     @project ||= Project.find(params[:project_id])
   end
 
+  def environment
+    @environment ||= Deploy::Environment.find(params[:environment_id])
+  end
+
   def task_params
-    params.require(:build_task).permit(:name, :command, :env, :type)
+    (params[:build_task] || params[:deploy_task])
+      .permit(:deploy_environment_id, :project_id, :name, :parallelizable, :command, :env, :type)
+  end
+
+  def scope
+    if params[:project_id].present?
+      project.build_tasks
+    elsif params[:environment_id].present?
+      environment.deploy_tasks
+    else
+      Task
+    end
   end
 end

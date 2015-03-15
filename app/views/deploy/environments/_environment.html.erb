@@ -28,6 +28,6 @@
 
   <td>
     <%= link_to 'Edit', edit_deploy_environment_path(environment) %> |
-    <%= link_to 'Delete', deploy_environment_path(environment), method: 'delete', remote: true, confirm: 'Are you sure?' %>
+    <%= link_to 'Delete', deploy_environment_path(environment), method: 'delete', remote: true, data: { confirm: 'Are you sure?' } %>
   </td>
 <% end %>

@@ -44,7 +44,11 @@ class Job < ActiveRecord::Base
 
   def finish(result)
     self.update_attributes!(success: result, finished: Time.now)
-    build.run_next
+    owner.run_next
+  end
+
+  def owner
+    (build || deploy)
   end
 
   def elapsed_time

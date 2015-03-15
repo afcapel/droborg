@@ -1,0 +1,39 @@
+<ol class="breadcrumb">
+  <li><%= link_to 'Deploys', deploys_path %></li>
+  <li>Deploy #<%= @deploy.id %></li>
+</ol>
+
+<div class="page-header">
+  <h1>Deploy <%= @deploy.name %> <small><%= revision_link @deploy, @deploy.revision, truncate: false %></small></h1>
+</div>
+
+<div class="media">
+  <div class="pull-left">
+    <%= avatar_img(@commit.author.email) %>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">
+
+      <span class="author">
+        <%= @commit.author.name %>
+      </span>
+
+      <span class='date small'>
+        <%= l @commit.author_date, format: :long %>
+      </span>
+    </h4>
+
+    <div class="well">
+      <%=simple_format @commit.message %>
+    </div>
+  </div>
+</div>
+
+<%= build_poll_tag do %>
+  <section id="results">
+    <h3>Results</h3>
+    <table class="table">
+      <%= render @jobs %>
+    </table>
+  </section>
+<% end %>

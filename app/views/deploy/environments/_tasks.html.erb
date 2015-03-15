@@ -1,0 +1,21 @@
+<div class="page-header" id="tasks">
+
+  <%= link_to_modal new_task_path(environment_id: @environment.id, format: "js"), class: "btn btn-link pull-right" do %>
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a Task
+  <% end %>
+
+  <h3>Tasks</h3>
+
+  <% if @environment.deploy_tasks.present? %>
+    <table class="table table-bordered" id="task-list">
+      <tbody>
+        <%= render partial: "/tasks/task", collection: @environment.deploy_tasks %>
+      </tbody>
+    </table>
+
+    <% else %>
+
+    <p>There are no deploy tasks in this environment yet.</p>
+  <% end %>
+
+</div>

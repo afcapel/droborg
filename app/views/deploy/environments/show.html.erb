@@ -1,0 +1,9 @@
+<div class="page-header">
+  <h1><%= @environment.name %></h1>
+</div>
+
+<section id="deploy-tasks">
+  <% @environment.deploy_tasks.each do |task| %>
+    <%= render "task", task: task %>
+  <% end %>
+</section>

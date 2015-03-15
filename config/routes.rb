@@ -4,12 +4,15 @@ Droborg::Application.routes.draw do
 
   resources :projects do
     put :refresh, on: :member
-
-    resources :tasks do
-      put :move, on: :member
-    end
-
     resources :builds
+  end
+
+  namespace :deploy do
+    resources :environments
+  end
+
+  resources :tasks do
+    put :move, on: :member
   end
 
   resources :builds
@@ -17,9 +20,7 @@ Droborg::Application.routes.draw do
   resources :jobs
   resources :results
 
-  namespace :deploy do
-    resources :environments
-  end
+
 
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'

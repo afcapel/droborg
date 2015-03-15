@@ -3,25 +3,27 @@
   <div class="form-group row">
     <div class="col-md-6">
       <%= f.input :name %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <div class="col-md-6">
       <%= f.association :project %>
     </div>
-  </div>
 
-  <div class="form-group row">
     <div class="col-md-6">
       <%= f.input :env, input_html: { rows: 8 }, label: 'Environment variables', hint: 'One variable per line' %>
     </div>
   </div>
 
+  <% if @environment.persisted? %>
+    <section class="row with-margins">
+      <div class="col-md-12">
+        <%= render "tasks" %>
+      </div>
+    </section>
+  <% end %>
+
+
   <div class="form-group">
     <%= f.submit class: 'btn btn-primary' %>
     <span class="or">or</span>
-    <%= link_to "Go back", projects_path %>
+    <%= link_to "Go back", deploy_environments_path %>
   </div>
 
 <% end %>

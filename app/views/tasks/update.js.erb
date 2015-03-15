@@ -1,4 +1,9 @@
+<% if @project %>
 $('#tasks').replaceWith('<%=j render "/projects/tasks" %>');
+<% elsif @environment %>
+$('#tasks').replaceWith('<%=j render "/deploy/environments/tasks" %>');
+<% end %>
+
 $('#modal').modal();
 $('#modal').modal('hide');
 $('#modal').removeData('bs.modal');

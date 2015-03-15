@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226114613) do
+ActiveRecord::Schema.define(version: 20150315221624) do
 
   create_table "builds", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -50,6 +50,16 @@ ActiveRecord::Schema.define(version: 20150226114613) do
     t.datetime "updated_at",                     null: false
   end
 
+  create_table "deploy_steps", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "revision",   limit: 255
+    t.integer  "project_id", limit: 4
+    t.integer  "build_id",   limit: 4
+    t.text     "output",     limit: 4294967295
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
   create_table "deploys", force: :cascade do |t|
     t.string   "name",                  limit: 255
     t.string   "revision",              limit: 255
@@ -61,6 +71,7 @@ ActiveRecord::Schema.define(version: 20150226114613) do
     t.text     "output",                limit: 4294967295
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+    t.string   "status",                limit: 255
   end
 
   create_table "jobs", force: :cascade do |t|
@@ -74,7 +85,10 @@ ActiveRecord::Schema.define(version: 20150226114613) do
     t.datetime "finished"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "deploy_id",  limit: 4
   end
+
+  add_index "jobs", ["deploy_id"], name: "index_jobs_on_deploy_id", using: :btree
 
   create_table "models", force: :cascade do |t|
   end
@@ -89,15 +103,24 @@ ActiveRecord::Schema.define(version: 20150226114613) do
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.integer  "project_id",     limit: 4
-    t.string   "name",           limit: 255
-    t.integer  "position",       limit: 4,     default: 1
-    t.boolean  "parallelizable", limit: 1
-    t.text     "command",        limit: 65535
-    t.text     "env",            limit: 65535
+    t.integer  "project_id",            limit: 4
+    t.string   "name",                  limit: 255
+    t.integer  "position",              limit: 4,     default: 1
+    t.boolean  "parallelizable",        limit: 1
+    t.text     "command",               limit: 65535
+    t.text     "env",                   limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type",           limit: 255
+    t.string   "type",                  limit: 255
+    t.integer  "deploy_environment_id", limit: 4
+  end
+
+  create_table "test_files", force: :cascade do |t|
+    t.integer  "job_id",              limit: 4
+    t.string   "path",                limit: 255
+    t.float    "last_execution_time", limit: 24
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
@@ -111,4 +134,5 @@ ActiveRecord::Schema.define(version: 20150226114613) do
     t.datetime "updated_at"
   end
 
+  add_foreign_key "jobs", "deploys"
 end
