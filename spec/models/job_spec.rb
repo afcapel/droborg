@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Build::Job do
+describe Job do
   include ActiveJob::TestHelper
 
   context "run job" do
@@ -12,8 +12,12 @@ describe Build::Job do
     end
 
     it "executes the task command in the workspace" do
-      expect(job).to receive(:execute).with("bundle install")
       job.run
+
+      expect(job.started_at).to be_present
+      expect(job.finished_at).to be_present
+      expect(job.status).to eq(Status::SUCCESS)
+      expect(job.output).to match /bundle install/
     end
   end
 end

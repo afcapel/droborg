@@ -1,4 +1,5 @@
 class Job < ActiveRecord::Base
+  include Status
 
   belongs_to :build
   belongs_to :deploy
@@ -6,76 +7,33 @@ class Job < ActiveRecord::Base
 
   delegate :project, :workspace, to: :build
 
-  attr_accessor :not_failed
-
-  scope :started,      -> { where("started IS NOT NULL") }
-  scope :not_finished, -> { where("finished IS NULL") }
-  scope :running,      -> { started.not_finished }
-
   def run
-    self.not_failed = true
-    self.update_attributes(output: '', started: Time.now)
+    self.update!(output: "$ #{task.command}\n\n", status: Status::RUNNING, started_at: Time.now)
 
-    execute(task.command) if task.command.present?
+    workspace.setup
 
-    finish(not_failed)
+    result = command.run do |output|
+      self.output += output
+      self.save!
+    end
 
-  rescue Exception => ex
-    self.not_failed = false
-    self.output += "\nError executing job: #{ex.message}"
-    self.output += ex.backtrace.join("\n")
-
-    finish(false)
-  end
-
-  def execute(command)
-    self.output += "$ #{command}\n"
-
-    workspace.execute(command, env) do |stdin, stdout_and_stderr, wait_thread|
-      while line = stdout_and_stderr.gets
-        self.output += line
-        save!
-      end
-
-      exit_status = wait_thread.value
-      self.not_failed = not_failed && exit_status.success?
+    if result.success?
+      update_attributes!(status: Status::SUCCESS, finished_at: Time.now)
+      build.run_next
+    else
+      update_attributes!(status: Status::FAILED, finished_at: Time.now)
     end
   end
 
-  def finish(result)
-    self.update_attributes!(success: result, finished: Time.now)
-    build.run_next
-  end
-
   def elapsed_time
-    return 0 unless started
+    return 0 unless started_at
 
-    up_to = finished || Time.now
-    up_to.to_i - started.to_i
+    up_to = finished_at || Time.now
+    up_to.to_i - started_at.to_i
   end
 
-  def pending?
-    started.blank?
-  end
-
-  def started?
-    started.present?
-  end
-
-  def running?
-    started? && !finished?
-  end
-
-  def finished?
-    finished.present?
-  end
-
-  def failed?
-    finished? && !succeded?
-  end
-
-  def succeded?
-    success
+  def command
+    @command ||= ShellCommand.new(task.command, workspace.path, env)
   end
 
   def env

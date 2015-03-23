@@ -1,22 +1,15 @@
 class Build < ActiveRecord::Base
 
-  STATUSES = [
-    SCHEDULED = "Scheduled",
-    RUNNING   = "Running",
-    FAILED    = "Failed",
-    SUCCESS   = "Success",
-    UNKNOWN   = "Unknown"
-  ]
-
   belongs_to :project
   belongs_to :user
   has_many :jobs, -> { order(:number) }, dependent: :destroy
+  has_many :deploys
 
   validates :project, presence: true
   validates :user, presence: true
 
-  scope :passing, -> { where(status: SUCCESS) }
-  scope :failed,  -> { where(status: SUCCESS) }
+  scope :passing, -> { where(status: Status::SUCCESS) }
+  scope :failed,  -> { where(status: Status::FAILED) }
 
   def name
     "#{id} #{revision.truncate(10, omission: '')}"
@@ -31,16 +24,16 @@ class Build < ActiveRecord::Base
   end
 
   def create_jobs
-    project.build_tasks.each_with_index.collect do |task, index|
+    project.tasks.each_with_index.collect do |task, index|
       self.jobs.where(task_id: task.id).first_or_create(number: index + 1)
     end
 
-    update_attribute :status, SCHEDULED
+    update_attribute :status, Status::SCHEDULED
   end
 
   def launch
     workspace.setup
-    update_attribute :status, RUNNING
+    update_attribute :status, Status::RUNNING
     run_next
   end
 
@@ -52,7 +45,7 @@ class Build < ActiveRecord::Base
         return unless job.task.parallelizable?
       when job.succeded? then next
       when job.failed?
-        fail_build
+        fail_build # fail is a reserved word
         return
       when job.running?  then return
       end
@@ -69,11 +62,9 @@ class Build < ActiveRecord::Base
 
   def finish
     if succeded?
-      update_attribute :status, SUCCESS
-    elsif failed?
-      update_attribute :status, FAILED
+      update_attribute :status, Status::SUCCESS
     else
-      update_attribute :status, UNKNOWN
+      update_attribute :status, Status::FAILED
     end
   end
 
@@ -82,7 +73,7 @@ class Build < ActiveRecord::Base
   end
 
   def pending?
-    status.in?([SCHEDULED, RUNNING]) && jobs.any? { |j| j.pending? }
+    status.in?([Status::SCHEDULED, Status::RUNNING]) && jobs.any? { |j| j.pending? }
   end
 
   def running?
@@ -94,11 +85,11 @@ class Build < ActiveRecord::Base
   end
 
   def succeded?
-    status == SUCCESS || jobs.all? { |j| j.succeded? }
+    status == Status::SUCCESS || jobs.all? { |j| j.succeded? }
   end
 
   def failed?
-    status == FAILED || jobs.any? { |j| j.failed? }
+    status == Status::FAILED || jobs.any? { |j| j.failed? }
   end
 
   def workspace

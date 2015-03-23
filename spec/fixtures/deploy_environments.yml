@@ -1,0 +1,17 @@
+staging:
+  name: Staging
+  project_id: <%= ActiveRecord::FixtureSet.identify(:websocket_parser) %>
+  current_revision: 3c258f9fa716dbda359b8aafe8ada155de20a2f0
+  available: true
+  deploy_command: echo "cap staging deploy"
+  created_at: 2015-03-19 20:39:04
+  updated_at: 2015-03-19 20:39:04
+
+production:
+  name: Production
+  project_id: <%= ActiveRecord::FixtureSet.identify(:websocket_parser) %>
+  current_revision: 973e775144cc1a300cb0ce163338aafc51ac1b53
+  available: true
+  deploy_command: echo "cap production deploy"
+  created_at: 2015-03-19 20:39:04
+  updated_at: 2015-03-19 20:39:04

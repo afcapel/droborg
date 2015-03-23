@@ -21,10 +21,12 @@ Droborg::Application.routes.draw do
     resources :environments
   end
 
-  get 'login', to: 'sessions#new', as: 'login'
-  get 'logout', to: 'sessions#destroy', as: 'logout'
+  get "login", to: "sessions#new", as: "login"
+  get "logout", to: "sessions#destroy", as: "logout"
   resource :session
-  get "auth/github/callback", to: "sessions#create"
 
-  root 'projects#index'
+  get "auth/github/callback", to: "sessions#create"
+  get "auth/failure", to: redirect("/")
+
+  root "projects#index"
 end

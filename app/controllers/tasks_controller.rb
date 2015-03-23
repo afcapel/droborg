@@ -3,11 +3,11 @@ class TasksController < ApplicationController
   before_filter :task, only: [:show, :edit]
 
   def new
-    @task = project.build_tasks.build(name: "New Task")
+    @task = project.tasks.build(name: "New Task")
   end
 
   def create
-    task = project.build_tasks.create!(task_params)
+    task = project.tasks.create!(task_params)
     render "update"
   end
 
@@ -31,7 +31,7 @@ class TasksController < ApplicationController
   private
 
   def task
-    @task ||= project.build_tasks.find(params[:id])
+    @task ||= project.tasks.find(params[:id])
   end
 
   def project

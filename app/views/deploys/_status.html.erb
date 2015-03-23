@@ -1,0 +1,14 @@
+<% if !defined?(deploy) || deploy.nil? %>
+  Not scheduled yet
+<% elsif deploy.pending? %>
+  Scheduled
+<% elsif deploy.running? %>
+  <%= image_tag 'spinner.gif' %>
+  <%= link_to_unless_current deploy, "Deploying" %>
+<% elsif deploy.succeded? %>
+    <span class="glyphicon glyphicon-ok-sign"></span>
+    <%= link_to_unless_current "Deployed on #{l deploy.finished_at, format: :short}", deploy %>
+<% elsif deploy.failed? %>
+    <span class="glyphicon glyphicon-thumbs-down"></span>
+    <%= link_to_unless_current deploy, "Error" %>
+<% end %>

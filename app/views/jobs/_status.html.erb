@@ -3,7 +3,7 @@
 <% elsif job.pending? %>
       Pending
 <% elsif job.running? %>
-  <%= image_tag 'spinner.gif' %> Running for <%= distance_of_time_in_words_to_now job.started %>
+  <%= image_tag 'spinner.gif' %> Running for <%= distance_of_time_in_words_to_now job.started_at %>
 <% elsif job.succeded? %>
     <span class="glyphicon glyphicon-ok-sign"></span> Succeded after <%= pluralize(job.elapsed_time, "second") %>
 <% elsif job.failed? %>

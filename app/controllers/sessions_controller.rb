@@ -17,11 +17,11 @@ class SessionsController < ApplicationController
   private
 
   def user_from_omniauth
-    github_uid = env["omniauth.auth"]["uid"]
+    auth = request.env["omniauth.auth"]
+    github_uid = auth["uid"]
 
     user = User.where(github_uid: github_uid).first || User.new
 
-    auth = env["omniauth.auth"]
     info = auth["info"]
 
     user.github_uid = auth["uid"]

@@ -1,0 +1,7 @@
+<%= content_tag_for :tr, deploy do %>
+  <td><%= link_to "Deploy ##{deploy.id}", deploy %></td>
+  <td><%= link_to deploy.project.name, deploy.project %></td>
+  <td><%= link_to deploy.user.name, deploy.user %></td>
+  <td><%= render '/deploys/status', deploy: deploy %></td>
+  <td><%= revision_link deploy.project, deploy.revision %></td>
+<% end %>

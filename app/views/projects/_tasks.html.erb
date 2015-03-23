@@ -6,10 +6,10 @@
 
   <h3>Tasks</h3>
 
-  <% if @project.build_tasks.present? %>
+  <% if @project.tasks.present? %>
     <table class="table table-bordered" id="task-list">
       <tbody>
-        <%= render @project.build_tasks %>
+        <%= render @project.tasks %>
       </tbody>
     </table>
 

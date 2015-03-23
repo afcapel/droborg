@@ -5,7 +5,7 @@
 
   <% if last_deploy %>
     <td>
-      <%= link_to last_deploy.revision, last_deploy %>
+      <%= revision_link last_deploy.project, last_deploy.revision, truncate: true %>
     </td>
 
     <td>
@@ -13,7 +13,7 @@
     </td>
 
     <td>
-      <%= link_to last_deploy, last_deploy.user %>
+      <%= render "/deploys/status", deploy: last_deploy %>
     </td>
 
   <% else %>

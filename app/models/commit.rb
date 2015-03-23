@@ -11,7 +11,7 @@ class Commit < SimpleDelegator
   def build
     return @build if defined?(@build)
 
-    @build = Build.where(revision: to_s, status: [Build::FAILED, Build::SUCCESS]).order(updated_at: :desc).first
+    @build = Build.where(revision: to_s).order(updated_at: :desc).first
   end
 
   def to_partial_path

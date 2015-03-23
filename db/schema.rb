@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226114613) do
+ActiveRecord::Schema.define(version: 20150321215332) do
 
   create_table "builds", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -45,38 +45,36 @@ ActiveRecord::Schema.define(version: 20150226114613) do
     t.integer  "project_id",       limit: 4
     t.string   "current_revision", limit: 255
     t.boolean  "available",        limit: 1
-    t.text     "env",              limit: 65535
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.string   "deploy_command",   limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "deploys", force: :cascade do |t|
     t.string   "name",                  limit: 255
-    t.string   "revision",              limit: 255
+    t.string   "status",                limit: 255
     t.integer  "user_id",               limit: 4
-    t.integer  "project_id",            limit: 4
     t.integer  "deploy_environment_id", limit: 4
     t.integer  "build_id",              limit: 4
-    t.datetime "deployed_at"
+    t.datetime "started_at"
+    t.datetime "finished_at"
     t.text     "output",                limit: 4294967295
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
 
   create_table "jobs", force: :cascade do |t|
-    t.integer  "build_id",   limit: 4
-    t.integer  "task_id",    limit: 4
-    t.integer  "number",     limit: 4
-    t.string   "type",       limit: 255
-    t.boolean  "success",    limit: 1
-    t.text     "output",     limit: 4294967295
-    t.datetime "started"
-    t.datetime "finished"
+    t.integer  "build_id",    limit: 4
+    t.integer  "task_id",     limit: 4
+    t.integer  "number",      limit: 4
+    t.string   "type",        limit: 255
+    t.boolean  "success",     limit: 1
+    t.text     "output",      limit: 4294967295
+    t.datetime "started_at"
+    t.datetime "finished_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "models", force: :cascade do |t|
+    t.string   "status",      limit: 255,        null: false
   end
 
   create_table "projects", force: :cascade do |t|
@@ -97,7 +95,6 @@ ActiveRecord::Schema.define(version: 20150226114613) do
     t.text     "env",            limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type",           limit: 255
   end
 
   create_table "users", force: :cascade do |t|

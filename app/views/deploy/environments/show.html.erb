@@ -1,0 +1,46 @@
+<ol class="breadcrumb">
+  <li><%= link_to 'Environments', deploy_environment_path %></li>
+  <li><%= @environment.name %></li>
+</ol>
+
+<div class="page-header">
+  <h4 class="pull-right">Current revision <%= revision_link @last_deploy.project, @last_deploy.revision, truncate: true %></h4>
+
+  <h1>
+    <%= @environment.name %>
+    <span class="environment-actions">
+      <%= link_to edit_project_path(@environment), class: "btn btn-link" do %>
+        Edit
+      <% end %>
+    </span>
+  </h1>
+</div>
+
+<section id="deploys">
+  <h3>Deploys</h3>
+
+  <% if @deploys.empty? %>
+    <div class="alert alert-warning">
+      <strong>No deploys yet!</strong> Launch a deploy to see the results here.
+    </div>
+  <% end %>
+
+  <table class="table table-bordered table-striped" id="deploys-list">
+    <theader>
+      <tr>
+        <th>Deploy</th>
+        <th>Project</th>
+        <th>Deployed by</th>
+        <th>Status</th>
+        <th>Revision</th>
+    </theader>
+
+    <tbody>
+      <%= render partial: '/deploys/deploy', collection: @deploys  %>
+    </tbody>
+  </table>
+
+  <div class="col-md-5">
+    <%= paginate @deploys %>
+  </div>
+</section>

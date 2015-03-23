@@ -6,7 +6,8 @@
   <td><%= revision_link build.project, build.revision %></td>
   <td>
     <% if build.project.deploy_environments.any? %>
-      <%= form_for @deploy, remote: true do |f| %>
+      <%= form_for @deploy do |f| %>
+        <%= hidden_field_tag "deploy[build_id]", build.id %>
         <%= deploy_env_select_for(build.project) %>
         <%= f.submit "Deploy", class: "btn btn-danger", confirm: "Are you sure?" %>
       <% end %>

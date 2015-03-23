@@ -17,6 +17,10 @@
       </ul>
 
       <ul class="nav navbar-nav">
+        <%= menu_item 'Environments', deploy_environments_path %>
+      </ul>
+
+      <ul class="nav navbar-nav">
         <%= menu_item 'Builds', builds_path %>
       </ul>
 
@@ -24,18 +28,12 @@
         <%= menu_item 'Deploys', deploys_path %>
       </ul>
 
-      <ul class="nav navbar-nav">
-        <%= menu_item 'Environments', deploy_environments_path %>
-      </ul>
-
-      <ul class="nav navbar-nav">
-        <%= menu_item 'Jobs', jobs_path %>
-      </ul>
-
       <ul class="nav navbar-nav navbar-right">
+
+        <%= avatar_img(current_user.email, class: "small-avatar avatar") %>
+
         <li class="dropdown">
           <%= link_to github_user_url(current_user), class: "dropdown-toggle", data: { toggle: "dropdown" } do %>
-          <%= avatar_img(current_user.email, class: "small-avatar avatar") %>
             <%= current_user.name %> <b class="caret"></b>
           <% end %>
 

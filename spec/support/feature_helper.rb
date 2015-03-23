@@ -1,10 +1,33 @@
 module FeatureHelper
+
   def login_as(user)
-    visit new_session_path
+    OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
+      provider: "github",
+      uid: user.github_uid,
+      info: {
+        name: user.name,
+        email: user.email,
+        image: user.avatar_url,
+        nickname: user.github_username,
+      },
+      credentials: {
+        token: user.github_token
+      }
+    })
 
-    fill_in 'session[email]', with: user.email
-    fill_in 'session[password]', with: 'secret'
+    visit "/auth/github/callback"
+  end
 
-    click_button "Log in"
+  def accepting_js_dialogs(&block)
+    page.evaluate_script <<-JS
+      window.original_confirm = window.confirm;
+      window.confirm = function() { return true; };
+    JS
+
+    block.call
+
+    page.evaluate_script <<-JS
+      window.confirm = window.original_confirm;
+    JS
   end
 end

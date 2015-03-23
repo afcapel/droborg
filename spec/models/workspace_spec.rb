@@ -7,7 +7,7 @@ describe Workspace do
 
   context "workspace setup" do
     before :each do
-      Dir.glob(Rails.root + 'tmp/workspaces/*').each { |dir| FileUtils.rm_rf(dir) }
+      FileUtils.rm_rf(workspace.path)
     end
 
     before :each do

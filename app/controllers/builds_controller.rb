@@ -2,7 +2,7 @@ class BuildsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @builds = Build.all.order('updated_at DESC')
+    @builds = Build.order('updated_at DESC').page(params[:page])
   end
 
   def show

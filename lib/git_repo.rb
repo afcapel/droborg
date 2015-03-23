@@ -46,6 +46,10 @@ class GitRepo
   end
 
   def clone_revision(dir, revision)
+    revision_path = "#{dir}/#{revision}"
+
+    return if File.exist?(revision_path)
+
     fetch
 
     revision_path = "#{dir}/#{revision}"
